@@ -2,13 +2,23 @@
 
 require_relative '../config/environment.rb'
 
-URL = "http://jservice.io/api/"
+URL = "http://jservice.io/api/random?count=6"
 parsed_url = URI.parse(URL)
 response = Net::HTTP.get_response(parsed_url)
+categories_hash = JSON.parse(response.body)
 
+def batch_category_creation(categories_hash)
+  categories_hash.each do |category|
+    name = category["category"]["title"].split(" ").map(&:capitalize).join(" ")
+    date = category["airdate"].gsub(/T(.+)/, "")
+    id = category["category_id"]
+    Category.new(name, date, id)
+  end
+end
+
+batch_category_creation(categories_hash)
 binding.pry
 
 
-# get six random categories by setting 18400 to rand number between 0 and 18400
-# http://jservice.io/api/categories?offset=18400&count=6
-
+# get array of categories first
+# then create questions from the categories
