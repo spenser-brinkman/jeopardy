@@ -2,3 +2,13 @@
 
 require_relative '../config/environment.rb'
 
+URL = "http://jservice.io/api/"
+parsed_url = URI.parse(URL)
+response = Net::HTTP.get_response(parsed_url)
+
+binding.pry
+
+
+# get six random categories by setting 18400 to rand number between 0 and 18400
+# http://jservice.io/api/categories?offset=18400&count=6
+
