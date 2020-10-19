@@ -4,9 +4,10 @@ class Category
 
   attr_reader :name, :date, :id
 
-  def initialize(name, date)
+  def initialize(name, date, id)
     @name = name
     @date = date
+    @id = id
     @@all << self
   end
 

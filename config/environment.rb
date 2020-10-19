@@ -2,7 +2,7 @@ require 'bundler/setup'
 
 require_relative '../lib/category.rb'
 require_relative '../lib/question.rb'
-require_relative '../lib/scraper.rb'
+require_relative '../lib/fetcher.rb'
 
 require "pry"
 require "open-uri"
