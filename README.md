@@ -14,6 +14,10 @@ mvp:
 
 stretch goals:
 
+    ask questions from nov 26 2001 and more recent
+    OR
+    recalculate the value of older questions to updated amounts (might be best to just use newer questions to avoid outdated information)
+
 
     do not ask questions that reference music, pictures, or videos
 
@@ -28,10 +32,6 @@ stretch goals:
     allow user to decline set of categories based on year given
     OR
     allow user to select a year to play from
-
-
-    get six random categories by setting 18400 to rand number between 0 and 18400
-    http://jservice.io/api/categories?offset=18400&count=6
 
  
     make a board to populate with the six categories
