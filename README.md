@@ -14,6 +14,9 @@ mvp:
 
 stretch goals:
     
+    restrict clues to all load from the same episode only
+
+    
     expand on instructions and short-comings in the game's startup
 
     
