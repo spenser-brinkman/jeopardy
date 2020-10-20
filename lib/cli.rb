@@ -1,31 +1,41 @@
 class CLI
 
   def run
-    sleep(0)
-    10.times {self.gap}
+    clear_screen
+    sleep(0) #1
+    puts "This!".center(172)
+    33.times {puts ""}
+    sleep(0) #2
+    clear_screen
     puts "This!".center(172)
     puts ""
-    sleep(0)
+    puts "Is!".center(172)
+    31.times {puts ""}
+    sleep(0) #2
+    clear_screen
+    puts "This!".center(172)
+    puts ""
     puts "Is!".center(172)
     puts ""
-    sleep(0)
-    puts "Solo Jeopardy!".center(172)
-    puts ""
-    sleep(0)
-    self.gap
-    self.gather_and_validate    
+    puts "(solo) ".rjust(81) + "Jeopardy!"
+    29.times {puts ""}
+    sleep(1) #3
+    clear_screen
+    puts "gather and validate"
+    # self.gather_and_validate    #turn this on
+    self.gather_categories        #turn these off
+    self.gather_clues             #turn these off
+    puts "prompt for setup"   
     self.prompt_for_setup
     self.gap
     self.clear_screen
-    self.display_starting_board
+    puts "prompt for category"
     self.prompt_for_category
   end
 
   def gather_categories
     Category.all.clear
     Fetcher.fetch_six_categories
-    self.gap
-    sleep(0)
   end
 
   def gather_clues
@@ -34,16 +44,43 @@ class CLI
   end
 
   def gather_and_validate
-    puts "Loading categories and validating clues.".center(172)
+    @i = 1
     loop do
+      clear_screen
+      puts "Loading categories and validating clues.".center(172)
+      puts ""
+      if @i % 3 == 1
+        puts ".".rjust(85)
+      elsif @i % 3 == 2
+        puts "..".rjust(86)
+      elsif @i % 3 == 0
+        puts "...".rjust(87)
+      end
+      29.times {puts ""}
+      @i += 1
       self.gather_categories
       self.gather_clues
       break if Clue.all[0..30].all? {|c| c.instance_variable_get(:@point_value) != nil}
     end
   end
 
+  # def gather_and_validate
+  #   @i = 0
+  #   validator = Clue.all[0..30].all? {|c| c.instance_variable_get(:@point_value) != nil}
+  #   until validator
+  #     self.gather_categories
+  #     self.gather_clues
+  #     @i += 1
+  #     i.times {print "."}
+  #   end
+  # end
+
+
+
+
   def prompt_for_setup
     loop do
+      clear_screen
       puts "The following categories are from the year #{Category.all[0].year}.".center(172)
       puts ""
       puts ""
@@ -65,7 +102,7 @@ class CLI
       puts ""
       sleep(0)
       puts "Would you like to play a game with these categories? (Y/N)".center(172)
-      puts ""
+      20.times {puts ""}
       player_input = gets.chomp.capitalize
       sleep(0.3)
       if player_input == "Y"
@@ -73,19 +110,21 @@ class CLI
         sleep(0)
         break      
       elsif player_input == "N"
-        puts ""
-        sleep(0)
+        clear_screen
         puts "Okay, let's get a new set of categories.".center(172)
-        puts ""
+        31.times {puts ""}
+        sleep(1)
         self.gather_and_validate
       else
-        sleep(0)
+        clear_screen
+        puts "Sorry, you'll need to enter:".center(172)
         puts ""
-        puts "Sorry, you need to enter:".center(172)
+        puts "Y for 'yes'".center(172)
         puts ""
-        sleep(0)
-        puts "Y for 'yes'    or    N for 'no'".center(172)
-        self.gap
+        puts "or".center(172)
+        puts ""
+        puts "N for 'no'".center(172)
+        27.times {puts ""}
         sleep(2)
       end
     end
@@ -106,36 +145,56 @@ class CLI
     self.generate_board
     puts "Today's categories are:".center(172)
     self.gap
-    puts "#{Category.all[1].name}   [1]".rjust(81) + "    ----    " + "#{@row_one[0]} | #{@row_one[1]} | #{@row_one[2]} | #{@row_one[3]} | #{@row_one[4]}".ljust(81)
-    puts "#{Category.all[2].name}   [2]".rjust(81) + "    ----    " + "#{@row_two[0]} | #{@row_two[1]} | #{@row_two[2]} | #{@row_two[3]} | #{@row_two[4]}".ljust(81)
-    puts "#{Category.all[3].name}   [3]".rjust(81) + "    ----    " + "#{@row_three[0]} | #{@row_three[1]} | #{@row_three[2]} | #{@row_three[3]} | #{@row_three[4]}".ljust(81)
-    puts "#{Category.all[4].name}   [4]".rjust(81) + "    ----    " + "#{@row_four[0]} | #{@row_four[1]} | #{@row_four[2]} | #{@row_four[3]} | #{@row_four[4]}".ljust(81)
-    puts "#{Category.all[5].name}   [5]".rjust(81) + "    ----    " + "#{@row_five[0]} | #{@row_five[1]} | #{@row_five[2]} | #{@row_five[3]} | #{@row_five[4]}".ljust(81)
-    puts "#{Category.all[0].name}   [6]".rjust(81) + "    ----    " + "#{@row_six[0]} | #{@row_six[1]} | #{@row_six[2]} | #{@row_six[3]} | #{@row_six[4]}".ljust(81)
+    puts "#{Category.all[1].name}   [1]".rjust(79) + "    ----    " + "#{@row_one[0]} | #{@row_one[1]} | #{@row_one[2]} | #{@row_one[3]} | #{@row_one[4]}"
+    self.gap
+    puts "#{Category.all[2].name}   [2]".rjust(79) + "    ----    " + "#{@row_two[0]} | #{@row_two[1]} | #{@row_two[2]} | #{@row_two[3]} | #{@row_two[4]}"
+    self.gap
+    puts "#{Category.all[3].name}   [3]".rjust(79) + "    ----    " + "#{@row_three[0]} | #{@row_three[1]} | #{@row_three[2]} | #{@row_three[3]} | #{@row_three[4]}"
+    self.gap
+    puts "#{Category.all[4].name}   [4]".rjust(79) + "    ----    " + "#{@row_four[0]} | #{@row_four[1]} | #{@row_four[2]} | #{@row_four[3]} | #{@row_four[4]}"
+    self.gap
+    puts "#{Category.all[5].name}   [5]".rjust(79) + "    ----    " + "#{@row_five[0]} | #{@row_five[1]} | #{@row_five[2]} | #{@row_five[3]} | #{@row_five[4]}"
+    self.gap
+    puts "#{Category.all[0].name}   [6]".rjust(79) + "    ----    " + "#{@row_six[0]} | #{@row_six[1]} | #{@row_six[2]} | #{@row_six[3]} | #{@row_six[4]}"
+    self.gap
   end
-  100 | 200 | 300 | 400 | 500
+  
   def prompt_for_category
+    display_starting_board
+    puts "Please enter 1-6 to select a category.".center(172)
+    15.times {puts ""}
     loop do
-      puts "Please enter 1-6 to select a category."
       player_input = gets.chomp.to_s
       if player_input == "1"
-        puts "#{Category.all[1].name}".rjust(81) + "    ----    " + "#{@row_one[0]} | #{@row_one[1]} | #{@row_one[2]} | #{@row_one[3]} | #{@row_one[4]}".ljust(81)
-        puts "".rjust(81) + "            " + "[1]   [2]   [3]   [4]   [5] ".ljust(81)
+        self.clear_screen
+        puts "#{Category.all[1].name}".rjust(79) + "    ----    " + "#{@row_one[0]} | #{@row_one[1]} | #{@row_one[2]} | #{@row_one[3]} | #{@row_one[4]}"
+        puts ""
+        puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
       elsif player_input == "2"
-        puts "#{Category.all[2].name}".rjust(81) + "    ----    " + "#{@row_two[0]} | #{@row_two[1]} | #{@row_two[2]} | #{@row_two[3]} | #{@row_two[4]}".ljust(81)
-        puts "".rjust(81) + "            " + "[1]   [2]   [3]   [4]   [5] ".ljust(81)
+        self.clear_screen
+        puts "#{Category.all[2].name}".rjust(79) + "    ----    " + "#{@row_two[0]} | #{@row_two[1]} | #{@row_two[2]} | #{@row_two[3]} | #{@row_two[4]}"
+        puts ""
+        puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
       elsif player_input == "3"
-        puts "#{Category.all[3].name}".rjust(81) + "    ----    " + "#{@row_three[0]} | #{@row_three[1]} | #{@row_three[2]} | #{@row_three[3]} | #{@row_three[4]}".ljust(81)
-        puts "".rjust(81) + "            " + "[1]   [2]   [3]   [4]   [5] ".ljust(81)
+        self.clear_screen
+        puts "#{Category.all[3].name}".rjust(79) + "    ----    " + "#{@row_three[0]} | #{@row_three[1]} | #{@row_three[2]} | #{@row_three[3]} | #{@row_three[4]}"
+        puts ""
+        puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
       elsif player_input == "4"
-        puts "#{Category.all[4].name}".rjust(81) + "    ----    " + "#{@row_four[0]} | #{@row_four[1]} | #{@row_four[2]} | #{@row_four[3]} | #{@row_four[4]}".ljust(81)
-        puts "".rjust(81) + "            " + "[1]   [2]   [3]   [4]   [5] ".ljust(81)
+        self.clear_screen
+        puts "#{Category.all[4].name}".rjust(79) + "    ----    " + "#{@row_four[0]} | #{@row_four[1]} | #{@row_four[2]} | #{@row_four[3]} | #{@row_four[4]}"
+        puts ""
+        puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
       elsif player_input == "5"
-        puts "#{Category.all[5].name}".rjust(81) + "    ----    " + "#{@row_five[0]} | #{@row_five[1]} | #{@row_five[2]} | #{@row_five[3]} | #{@row_five[4]}".ljust(81)
-        puts "".rjust(81) + "            " + "[1]   [2]   [3]   [4]   [5] ".ljust(81)
+        self.clear_screen
+        puts "#{Category.all[5].name}".rjust(79) + "    ----    " + "#{@row_five[0]} | #{@row_five[1]} | #{@row_five[2]} | #{@row_five[3]} | #{@row_five[4]}"
+        puts ""
+        puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
       elsif player_input == "6"
-        puts "#{Category.all[0].name}".rjust(81) + "    ----    " + "#{@row_six[0]} | #{@row_six[1]} | #{@row_six[2]} | #{@row_six[3]} | #{@row_six[4]}".ljust(81)
-        puts "".rjust(81) + "            " + "[1]   [2]   [3]   [4]   [5] ".ljust(81)
+        self.clear_screen
+        puts "#{Category.all[0].name}".rjust(79) + "    ----    " + "#{@row_six[0]} | #{@row_six[1]} | #{@row_six[2]} | #{@row_six[3]} | #{@row_six[4]}"
+        puts ""
+        puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
       else
         puts "Sorry, you need to enter a number corresponding to one of the categories listed above."
       end
