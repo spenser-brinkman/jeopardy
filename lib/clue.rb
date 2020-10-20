@@ -1,8 +1,8 @@
 class Clue
   
   @@all = []
-  
-  attr_reader = :date, :question, :answer, :point_value, :category
+
+  attr_reader :date, :question, :answer, :point_value, :category
 
   def initialize(date, question, answer, point_value, category)
     @date = date
