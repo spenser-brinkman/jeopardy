@@ -15,7 +15,7 @@ class Fetcher
     end
   end
   
-  def self.parse_for_clues
+  def self.fetch_thirty_clues
     Category.all.each do |clue_category|
       category_id = clue_category.id
       parsed_url = URI.parse(BASE_URL + "api/category?id=" + category_id)
@@ -31,9 +31,4 @@ class Fetcher
       end
     end
   end
-  
-  def batch_clue_creation
-    
-  end
-
 end

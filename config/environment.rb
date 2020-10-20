@@ -3,6 +3,7 @@ require 'bundler/setup'
 require_relative '../lib/category.rb'
 require_relative '../lib/clue.rb'
 require_relative '../lib/fetcher.rb'
+require_relative '../lib/cli.rb'
 
 require "pry"
 require "open-uri"

@@ -6,11 +6,7 @@ BASE_URL = "http://jservice.io/"
 
 
 
-
-Fetcher.fetch_six_categories
-
-Fetcher.parse_for_clues
-binding.pry
+CLI.new.run
 
 
 # get array of categories first
