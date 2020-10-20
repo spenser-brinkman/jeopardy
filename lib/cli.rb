@@ -18,7 +18,6 @@ class CLI
     puts "Done!"
     puts ""
     sleep(1)
-    
   end
 
   def prompt_for_input
@@ -38,7 +37,6 @@ class CLI
         sleep(1)
         break      
       elsif user_input == "N"
-        # get new set of categories
         puts ""
         sleep(1)
         puts "Loading a new set of categories, please wait."
