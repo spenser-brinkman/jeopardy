@@ -2,16 +2,16 @@ class CLI
 
   def run
     clear_screen
-    sleep(0) #1
+    sleep(0)                               #1
     puts "This!".center(172)
     33.times {puts ""}
-    sleep(0) #2
+    sleep(0)                               #2
     clear_screen
     puts "This!".center(172)
     puts ""
     puts "Is!".center(172)
     31.times {puts ""}
-    sleep(0) #2
+    sleep(0)                               #2
     clear_screen
     puts "This!".center(172)
     puts ""
@@ -19,16 +19,15 @@ class CLI
     puts ""
     puts "(solo) ".rjust(81) + "Jeopardy!"
     29.times {puts ""}
-    sleep(1) #3
+    sleep(1)                               #3
     clear_screen
     puts "gather and validate"
-    # self.gather_and_validate    #turn this on
-    self.gather_categories        #turn these off
-    self.gather_clues             #turn these off
+    self.gather_and_validate    #turn this on
+    # self.gather_categories        #turn these off
+    # self.gather_clues             #turn these off
     puts "prompt for setup"   
     self.prompt_for_setup
-    self.gap
-    self.clear_screen
+    clear_screen
     puts "prompt for category"
     self.prompt_for_category
   end
@@ -142,8 +141,6 @@ class CLI
   end
 
   def display_starting_board
-    self.generate_board
-    puts "Today's categories are:".center(172)
     self.gap
     puts "#{Category.all[1].name}   [1]".rjust(79) + "    ----    " + "#{@row_one[0]} | #{@row_one[1]} | #{@row_one[2]} | #{@row_one[3]} | #{@row_one[4]}"
     self.gap
@@ -160,43 +157,55 @@ class CLI
   end
   
   def prompt_for_category
-    display_starting_board
-    puts "Please enter 1-6 to select a category.".center(172)
-    15.times {puts ""}
+    generate_board
+    puts "Today's categories are:".center(172)
     loop do
+      binding.pry
+      player_input = ""
+      display_starting_board
+      puts "Please enter 1-6 to select a category.".center(172)
+      15.times {puts ""}
       player_input = gets.chomp.to_s
+      binding.pry
       if player_input == "1"
-        self.clear_screen
+        clear_screen
         puts "#{Category.all[1].name}".rjust(79) + "    ----    " + "#{@row_one[0]} | #{@row_one[1]} | #{@row_one[2]} | #{@row_one[3]} | #{@row_one[4]}"
         puts ""
         puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
+        28.times {puts ""}
       elsif player_input == "2"
-        self.clear_screen
+        clear_screen
         puts "#{Category.all[2].name}".rjust(79) + "    ----    " + "#{@row_two[0]} | #{@row_two[1]} | #{@row_two[2]} | #{@row_two[3]} | #{@row_two[4]}"
         puts ""
         puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
+        28.times {puts ""}
       elsif player_input == "3"
-        self.clear_screen
+        clear_screen
         puts "#{Category.all[3].name}".rjust(79) + "    ----    " + "#{@row_three[0]} | #{@row_three[1]} | #{@row_three[2]} | #{@row_three[3]} | #{@row_three[4]}"
         puts ""
         puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
+        28.times {puts ""}
       elsif player_input == "4"
-        self.clear_screen
+        clear_screen
         puts "#{Category.all[4].name}".rjust(79) + "    ----    " + "#{@row_four[0]} | #{@row_four[1]} | #{@row_four[2]} | #{@row_four[3]} | #{@row_four[4]}"
         puts ""
         puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
+        28.times {puts ""}
       elsif player_input == "5"
-        self.clear_screen
+        clear_screen
         puts "#{Category.all[5].name}".rjust(79) + "    ----    " + "#{@row_five[0]} | #{@row_five[1]} | #{@row_five[2]} | #{@row_five[3]} | #{@row_five[4]}"
         puts ""
         puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
+        28.times {puts ""}
       elsif player_input == "6"
-        self.clear_screen
+        clear_screen
         puts "#{Category.all[0].name}".rjust(79) + "    ----    " + "#{@row_six[0]} | #{@row_six[1]} | #{@row_six[2]} | #{@row_six[3]} | #{@row_six[4]}"
         puts ""
         puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
+        28.times {puts ""}
       else
-        puts "Sorry, you need to enter a number corresponding to one of the categories listed above."
+        clear_screen
+        puts "Sorry, you need to enter a number corresponding to one of the categories listed here:".center(172)
       end
     end
   end
