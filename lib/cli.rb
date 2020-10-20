@@ -3,14 +3,20 @@ class CLI
   def run
     sleep(0)
     10.times {self.gap}
-    puts "Welcome to Solo Jeopardy!".center(172)
+    puts "This!".center(172)
     puts ""
     sleep(0)
-    puts "Loading your categories, please wait.".center(172) 
+    puts "Is!".center(172)
+    puts ""
+    sleep(0)
+    puts "Solo Jeopardy!".center(172)
+    puts ""
+    sleep(0)
     self.gap
     self.gather_and_validate    
     self.prompt_for_input
-    puts "Great! Please wait for your clues to load.".center(172)
+    self.gap
+    puts "Great! Today's categories are:".center(172)
     self.gap
     self.display_board
     binding.pry
@@ -19,7 +25,6 @@ class CLI
   def gather_categories
     Category.all.clear
     Fetcher.fetch_six_categories
-    puts "Categories loaded, checking validity of clues".center(172)
     self.gap
     sleep(0)
   end
@@ -30,6 +35,7 @@ class CLI
   end
 
   def gather_and_validate
+    puts "Loading categories and validating clues.".center(172)
     loop do
       self.gather_categories
       self.gather_clues
@@ -72,7 +78,7 @@ class CLI
     end
   end
 
-
+# https://www.rubyguides.com/2012/01/ruby-string-formatting/ to clean this vvvv upd
 
   def generate_board
     @row_one = ["#{Category.all[0].clues[0].point_value}", "#{Category.all[0].clues[1].point_value}", "#{Category.all[0].clues[2].point_value}", "#{Category.all[0].clues[3].point_value}", "#{Category.all[0].clues[4].point_value}"]
@@ -85,12 +91,12 @@ class CLI
 
   def display_board
     self.generate_board
-    puts "#{Category.all[1].name}" + "    ---    ".center(172) + "#{@row_one[0]} | #{@row_one[1]} | #{@row_one[2]} | #{@row_one[3]} | #{@row_one[4]}"
-    puts "#{Category.all[2].name}    ---    #{@row_two[0]} | #{@row_two[1]} | #{@row_two[2]} | #{@row_two[3]} | #{@row_two[4]}".center(172)
-    puts "#{Category.all[3].name}    ---    #{@row_three[0]} | #{@row_three[1]} | #{@row_three[2]} | #{@row_three[3]} | #{@row_three[4]}".center(172)
-    puts "#{Category.all[4].name}    ---    #{@row_four[0]} | #{@row_four[1]} | #{@row_four[2]} | #{@row_four[3]} | #{@row_four[4]}".center(172)
-    puts "#{Category.all[5].name}    ---    #{@row_five[0]} | #{@row_five[1]} | #{@row_five[2]} | #{@row_five[3]} | #{@row_five[4]}".center(172)
-    puts "#{Category.all[0].name}    ---    #{@row_six[0]} | #{@row_six[1]} | #{@row_six[2]} | #{@row_six[3]} | #{@row_six[4]}".center(172)
+    puts "#{Category.all[1].name}".rjust(80) + "    ----    " + "#{@row_one[0]} | #{@row_one[1]} | #{@row_one[2]} | #{@row_one[3]} | #{@row_one[4]}".ljust(80)
+    puts "#{Category.all[2].name}".rjust(80) + "    ----    " + "#{@row_two[0]} | #{@row_two[1]} | #{@row_two[2]} | #{@row_two[3]} | #{@row_two[4]}".ljust(80)
+    puts "#{Category.all[3].name}".rjust(80) + "    ----    " + "#{@row_three[0]} | #{@row_three[1]} | #{@row_three[2]} | #{@row_three[3]} | #{@row_three[4]}".ljust(80)
+    puts "#{Category.all[4].name}".rjust(80) + "    ----    " + "#{@row_four[0]} | #{@row_four[1]} | #{@row_four[2]} | #{@row_four[3]} | #{@row_four[4]}".ljust(80)
+    puts "#{Category.all[5].name}".rjust(80) + "    ----    " + "#{@row_five[0]} | #{@row_five[1]} | #{@row_five[2]} | #{@row_five[3]} | #{@row_five[4]}".ljust(80)
+    puts "#{Category.all[0].name}".rjust(80) + "    ----    " + "#{@row_six[0]} | #{@row_six[1]} | #{@row_six[2]} | #{@row_six[3]} | #{@row_six[4]}".ljust(80)
   end
 
 
