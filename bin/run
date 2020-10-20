@@ -4,6 +4,10 @@ require_relative '../config/environment.rb'
 
 BASE_URL = "http://jservice.io/"
 
+# CLI.new.prompt_for_value
+
+
+
 
 
 CLI.new.run

@@ -2,34 +2,25 @@ class CLI
 
   def run
     clear_screen
-    sleep(0)                               #1
+    sleep(1)                               #1
     puts "This!".center(172)
-    33.times {puts ""}
-    sleep(0)                               #2
+    31.times {puts ""}
+    sleep(1.3)                               #2
     clear_screen
-    puts "This!".center(172)
-    puts ""
     puts "Is!".center(172)
     31.times {puts ""}
-    sleep(0)                               #2
+    sleep(1.3)                               #2
     clear_screen
-    puts "This!".center(172)
-    puts ""
-    puts "Is!".center(172)
-    puts ""
-    puts "(solo) ".rjust(81) + "Jeopardy!"
-    29.times {puts ""}
-    sleep(1)                               #3
-    clear_screen
-    puts "gather and validate"
+    Art.title
+    22.times {puts ""}
+    sleep(2)                               #3
     self.gather_and_validate    #turn this on
     # self.gather_categories        #turn these off
     # self.gather_clues             #turn these off
-    puts "prompt for setup"   
     self.prompt_for_setup
     clear_screen
-    puts "prompt for category"
     self.prompt_for_category
+    self.prompt_for_value
   end
 
   def gather_categories
@@ -84,7 +75,6 @@ class CLI
       puts ""
       puts ""
       puts ""
-      sleep(0)
       puts "#{Category.all[0].name}".center(172)
       puts ""
       puts "#{Category.all[1].name}".center(172)
@@ -99,14 +89,11 @@ class CLI
       puts ""
       puts ""
       puts ""
-      sleep(0)
       puts "Would you like to play a game with these categories? (Y/N)".center(172)
       20.times {puts ""}
       player_input = gets.chomp.capitalize
       sleep(0.3)
       if player_input == "Y"
-        puts ""
-        sleep(0)
         break      
       elsif player_input == "N"
         clear_screen
@@ -129,7 +116,7 @@ class CLI
     end
   end
 
-# https://www.rubyguides.com/2012/01/ruby-string-formatting/ to clean this vvvv upd
+  # https://www.rubyguides.com/2012/01/ruby-string-formatting/ to clean this vvvv upd
 
   def generate_board
     @row_one = ["#{Category.all[0].clues[0].point_value}", "#{Category.all[0].clues[1].point_value}", "#{Category.all[0].clues[2].point_value}", "#{Category.all[0].clues[3].point_value}", "#{Category.all[0].clues[4].point_value}"]
@@ -160,51 +147,68 @@ class CLI
     generate_board
     puts "Today's categories are:".center(172)
     loop do
-      binding.pry
       player_input = ""
       display_starting_board
       puts "Please enter 1-6 to select a category.".center(172)
       15.times {puts ""}
-      player_input = gets.chomp.to_s
-      binding.pry
-      if player_input == "1"
+      player_input = gets.chomp.to_i
+      if player_input == 1
         clear_screen
         puts "#{Category.all[1].name}".rjust(79) + "    ----    " + "#{@row_one[0]} | #{@row_one[1]} | #{@row_one[2]} | #{@row_one[3]} | #{@row_one[4]}"
         puts ""
-        puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
-        28.times {puts ""}
-      elsif player_input == "2"
+        puts "".rjust(79) + "            [1]   [2]   [3]   [4]   [5] "
+        29.times {puts ""}
+        break
+      elsif player_input == 2
         clear_screen
         puts "#{Category.all[2].name}".rjust(79) + "    ----    " + "#{@row_two[0]} | #{@row_two[1]} | #{@row_two[2]} | #{@row_two[3]} | #{@row_two[4]}"
         puts ""
-        puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
-        28.times {puts ""}
-      elsif player_input == "3"
+        puts "".rjust(79) + "            [1]   [2]   [3]   [4]   [5] "
+        29.times {puts ""}
+        break
+      elsif player_input == 3
         clear_screen
         puts "#{Category.all[3].name}".rjust(79) + "    ----    " + "#{@row_three[0]} | #{@row_three[1]} | #{@row_three[2]} | #{@row_three[3]} | #{@row_three[4]}"
         puts ""
-        puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
-        28.times {puts ""}
-      elsif player_input == "4"
+        puts "".rjust(79) + "            [1]   [2]   [3]   [4]   [5] "
+        29.times {puts ""}
+        break
+      elsif player_input == 4
         clear_screen
         puts "#{Category.all[4].name}".rjust(79) + "    ----    " + "#{@row_four[0]} | #{@row_four[1]} | #{@row_four[2]} | #{@row_four[3]} | #{@row_four[4]}"
         puts ""
-        puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
-        28.times {puts ""}
-      elsif player_input == "5"
+        puts "".rjust(79) + "            [1]   [2]   [3]   [4]   [5] "
+        29.times {puts ""}
+        break
+      elsif player_input == 5
         clear_screen
         puts "#{Category.all[5].name}".rjust(79) + "    ----    " + "#{@row_five[0]} | #{@row_five[1]} | #{@row_five[2]} | #{@row_five[3]} | #{@row_five[4]}"
         puts ""
-        puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
-        28.times {puts ""}
-      elsif player_input == "6"
+        puts "".rjust(79) + "            [1]   [2]   [3]   [4]   [5] "
+        29.times {puts ""}
+        break
+      elsif player_input == 6
         clear_screen
         puts "#{Category.all[0].name}".rjust(79) + "    ----    " + "#{@row_six[0]} | #{@row_six[1]} | #{@row_six[2]} | #{@row_six[3]} | #{@row_six[4]}"
         puts ""
-        puts "".rjust(79) + "            " + "[1]   [2]   [3]   [4]   [5] "
-        28.times {puts ""}
+        puts "".rjust(79) + "            [1]   [2]   [3]   [4]   [5] "
+        29.times {puts ""}
+        break
       else
         clear_screen
+        puts "Sorry, you need to enter a number corresponding to one of the categories listed here:".center(172)
+      end
+    end
+  end
+
+  def prompt_for_value
+    loop do
+      puts "Please enter a number corresponding to the point value of an available clue.".center(172)
+      user_input = gets.chomp.to_i
+      user_input -= 1
+      if user_input.between?(0, 4) # && user_input.exists?
+        puts "A"
+      else
         puts "Sorry, you need to enter a number corresponding to one of the categories listed here:".center(172)
       end
     end
