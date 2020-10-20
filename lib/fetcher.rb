@@ -17,12 +17,13 @@ class Fetcher
   
   def self.fetch_thirty_clues
     Category.all.each do |clue_category|
+      category_name = clue_category
       category_id = clue_category.id
       parsed_url = URI.parse(BASE_URL + "api/category?id=" + category_id)
       response = Net::HTTP.get_response(parsed_url)
       clues = JSON.parse(response.body)["clues"]
       clues.take(5).each do |clue|
-        category = JSON.parse(response.body)["title"].split(" ").map(&:capitalize).join(" ")
+        category = category_name
         date = clue["airdate"].gsub(/T(.+)/, "")
         question = clue["question"]
         answer = clue["answer"]

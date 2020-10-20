@@ -15,4 +15,7 @@ class Category
     @@all
   end
 
+  def self.clues
+    Clue.all.select {|clue| clue.category == self}
+  end
 end
