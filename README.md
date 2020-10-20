@@ -13,7 +13,10 @@ mvp:
 
 
 stretch goals:
+    
+    expand on instructions and short-comings in the game's startup
 
+    
     ask questions from nov 26 2001 and more recent
     OR
     recalculate the value of older questions to updated amounts (might be best to just use newer questions to avoid outdated information)
