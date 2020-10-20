@@ -14,8 +14,15 @@ mvp:
 
 stretch goals:
 
+
+    do not ask questions that reference music, pictures, or videos
+
+
     define method to validate that a category is populated with questions that have point values and that have answers
     (if invalid, could make a method based on Fetcher.fetch_six_categories that only gets one new category)
+
+
+    validate user answers to (closely) match actual answers
 
 
     allow user to decline set of categories based on year given

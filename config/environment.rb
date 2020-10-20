@@ -1,7 +1,7 @@
 require 'bundler/setup'
 
 require_relative '../lib/category.rb'
-require_relative '../lib/question.rb'
+require_relative '../lib/clue.rb'
 require_relative '../lib/fetcher.rb'
 
 require "pry"

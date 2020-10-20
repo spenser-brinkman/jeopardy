@@ -1,5 +1,8 @@
-class Question
-  attr_reader = :date, :question, :answer, :value, :category
+class Clue
+  
+  @@all = []
+  
+  attr_reader = :date, :question, :answer, :point_value, :category
 
   def initialize(date, question, answer, point_value, category)
     @date = date
@@ -7,6 +10,11 @@ class Question
     @answer = answer
     @point_value = point_value
     @category = category
+    @@all << self
   end
-  
+
+  def self.all
+    @@all
+  end
+
 end

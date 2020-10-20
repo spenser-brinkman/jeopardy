@@ -9,9 +9,9 @@ BASE_URL = "http://jservice.io/"
 
 Fetcher.fetch_six_categories
 
-Fetcher.parse_for_questions
-
+Fetcher.parse_for_clues
+binding.pry
 
 
 # get array of categories first
-# then create questions from the categories
+# then create clues from the categories
