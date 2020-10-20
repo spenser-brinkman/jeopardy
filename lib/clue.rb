@@ -2,10 +2,10 @@ class Clue
   
   @@all = []
 
-  attr_accessor :date, :question, :answer, :point_value, :category
+  attr_accessor :year, :question, :answer, :point_value, :category
 
-  def initialize(date, question, answer, point_value, category)
-    @date = date
+  def initialize(year, question, answer, point_value, category)
+    @year = year
     @question = question
     @answer = answer
     @point_value = point_value

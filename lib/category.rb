@@ -2,11 +2,11 @@ class Category
   
   @@all = []
 
-  attr_reader :name, :date, :id
+  attr_reader :name, :year, :id
 
-  def initialize(name, date, id)
+  def initialize(name, year, id)
     @name = name
-    @date = date
+    @year = year
     @id = id
     @@all << self
   end

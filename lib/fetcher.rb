@@ -9,9 +9,9 @@ class Fetcher
     categories = JSON.parse(response.body)
     categories.each do |category|
       name = category["category"]["title"].split(" ").map(&:capitalize).join(" ")
-      date = category["airdate"].gsub(/T(.+)/, "")
+      year = category["airdate"].gsub(/(.{6})T(.+)/, "")
       id = category["category_id"].to_s
-      Category.new(name, date, id)
+      Category.new(name, year, id)
     end
   end
   
@@ -24,11 +24,11 @@ class Fetcher
       clues = JSON.parse(response.body)["clues"]
       clues.take(5).each do |clue|
         category = category_name
-        date = clue["airdate"].gsub(/T(.+)/, "")
+        year = clue["airdate"].gsub(/(.{6})T(.+)/, "")
         question = clue["question"]
         answer = clue["answer"]
         point_value = clue["value"]
-        Clue.new(date, question, answer, point_value, category)
+        Clue.new(year, question, answer, point_value, category)
       end
     end
   end
