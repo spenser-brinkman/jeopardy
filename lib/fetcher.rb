@@ -21,8 +21,8 @@ class Fetcher
       parsed_url = URI.parse(BASE_URL + "api/category?id=" + category_id)
       response = Net::HTTP.get_response(parsed_url)
       clues = JSON.parse(response.body)["clues"]
-      clues.each do |clue|
-        category = JSON.parse(response.body)["title"]
+      clues.take(5).each do |clue|
+        category = JSON.parse(response.body)["title"].split(" ").map(&:capitalize).join(" ")
         date = clue["airdate"].gsub(/T(.+)/, "")
         question = clue["question"]
         answer = clue["answer"]
