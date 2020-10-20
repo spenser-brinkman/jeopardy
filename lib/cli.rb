@@ -75,7 +75,7 @@ class CLI
       elsif player_input == "N"
         puts ""
         sleep(0)
-        puts "Loading a new set of categories, please wait.".center(172)
+        puts "Okay, let's get a new set of categories.".center(172)
         puts ""
         self.gather_and_validate
       else
