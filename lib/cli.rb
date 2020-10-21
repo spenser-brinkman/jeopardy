@@ -185,6 +185,16 @@ class CLI
   end
 
   def get_clue
+    clear_screen
+    puts "For #{@all_rows[@category_input][0].point_value} points,".center(172)
+    puts ""
+    puts "here is your clue from the category".center(172)
+    puts ""
+    puts "\"#{Category.all[@category_input].name}\":".center(172)
+    gap
+    puts "#{@all_rows[@category_input][0].question}".center(172)
+    26.times {puts ""}
+    sleep(3)
   end
 
 
