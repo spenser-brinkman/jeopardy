@@ -1,8 +1,6 @@
 class Category
   
-  @@all = []
-
-  attr_reader :name, :year, :id
+  attr_accessor :name, :year, :id
 
   def initialize(name, year, id)
     @name = name
@@ -11,14 +9,8 @@ class Category
     @@all << self
   end
 
-  def self.all
-    @@all
-  end
+  def 
 
-  def clear_all
-    @@all.clear
-  end
-  
   def clues
     Clue.all.select {|c| c.category == self}
   end

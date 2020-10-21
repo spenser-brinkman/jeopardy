@@ -1,10 +1,32 @@
 class CLI
 
-  def run
+  def run_2
     self.intro
-    self.gather_and_validate    #turn this on
-    # self.gather_categories        #turn these off
-    # self.gather_clues             #turn these off
+    Fetcher.fetch_clues
+  end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  def run
+    # self.intro
+    # self.gather_and_validate    #turn this on
+    self.gather_categories        #turn these off
+    self.gather_clues             #turn these off
     self.prompt_for_setup
     self.prompt_for_category
     self.prompt_for_value

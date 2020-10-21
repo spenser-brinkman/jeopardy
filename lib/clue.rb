@@ -4,7 +4,7 @@ class Clue
 
   attr_accessor :year, :question, :answer, :point_value, :category, :invalid_count
 
-  def initialize(year, question, answer, point_value, category, invalid_count = "nil")
+  def initialize(year, question, answer, point_value, category, invalid_count)
     @year = year
     @question = question
     @answer = answer

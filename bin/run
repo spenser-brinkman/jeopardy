@@ -2,15 +2,4 @@
 
 require_relative '../config/environment.rb'
 
-BASE_URL = "http://jservice.io/"
-
-
-
-
-# Fetcher.fetch_category
-
-CLI.new.run
-
-
-# get array of categories first
-# then create clues from the categories
+CLI.new.run_2

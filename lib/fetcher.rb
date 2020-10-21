@@ -1,67 +1,38 @@
 class Fetcher
 
   BASE_URL = "http://jservice.io/"
-  
-  
-  def self.fetch_six_categories
-    parsed_url = URI.parse(BASE_URL + "api/random?count=6")
-    response = Net::HTTP.get_response(parsed_url)
-    categories = JSON.parse(response.body)
-    categories.each do |category|
-      name = category["category"]["title"].split(" ").map(&:capitalize).join(" ")
-      year = category["airdate"].gsub(/(.{6})T(.+)/, "")
-      id = category["category_id"].to_s
-      Category.new(name, year, id)
+
+  def self.fetch_clues
+    categories = []
+    until categories.count == 30 && categories.all? {|c| c["answer"] != "" && c["question"] != "" && c["invalid_count"] == nil}
+      date = self.randomize_date
+      parsed_url = URI.parse(BASE_URL + "api/clues?min_date=#{date}&max_date=#{date}")
+      response = Net::HTTP.get_response(parsed_url)
+      categories = JSON.parse(response.body)
+      puts "."                                              # deleteme
     end
   end
+
   
-  def self.fetch_thirty_clues
-    Category.all.each do |clue_category|
-      category_name = clue_category
-      category_id = clue_category.id
-      parsed_url = URI.parse(BASE_URL + "api/category?id=" + category_id)
-      response = Net::HTTP.get_response(parsed_url)
-      clues = JSON.parse(response.body)["clues"]
-      clues.take(5).each do |clue|
-        category = category_name
-        year = clue["airdate"].gsub(/(.{6})T(.+)/, "")
-        question = clue["question"]
-        answer = clue["answer"]
-        point_value = clue["value"]
-        invalid_count = clue["invalid_count"]
-        Clue.new(year, question, answer, point_value, category, invalid_count)
+  # vv The first episode of Jeopardy to use the current dollar amounts aired on Nov 26, 2001. vv
+  # vv The most recent episode available from this API aired on Mar 31, 2015                  vv
+  
+  def self.randomize_date  
+    year = rand(2001..2015)
+    if year == 2001
+      month = rand(11..12)
+      if month == 11
+        day = rand(26..30)
+      elsif month == 12
+        day = rand(1..31)
       end
+    elsif year == 2015
+      month = rand(1..3)
+      day = rand(1..31)
+    else
+      month = rand(1..12)
+      day = rand(1..31)
     end
+    random_date = "#{year.to_s}-#{month.to_s}-#{day.to_s}"
   end
 end
-
-  # refactor:
-
-  # def fetch_categories
-  #   until self.valid_category?
-  #     Category.clear_all
-  #     parsed_url = URI.parse(BASE_URL + "api/categories?offset=#{rand(1..18310)}&count=100")
-  #     response = Net::HTTP.get_response(parsed_url)
-  #     array_of_100_clues = JSON.parse(response.body)
-  #     until 30_clues.count == 30 do
-  #       array_of_100_clues.each do |clue|
-
-            
-
-
-  #       Category.new(name, year, id)
-
-
-  # def valid_category?
-  #   # should check that there are five clues with matching airdates that all have a question, answer, and point_value
-  # end
-
-# end
-
-# http://jservice.io/api/clues?offset=156709&count=100
-# ^^this grabs 100 clues
-
-# valid?
-# for 100array, fetch the first thirty with matching airdate
-#   check to see that all 30 have value for points, question, answer, and are not invald
-#   if they are invalid, send back false
