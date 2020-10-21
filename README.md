@@ -14,25 +14,11 @@ mvp:
 
 stretch goals:
     
-    fetcher is pulling clues from different dates out of larger categories. first fetch thinks 2003, let me go grab five /random/ clues from the category! oops, they're wrong dates, oh well.
-
-    
-    restrict clues to all load from the same episode only
-
     
     expand on instructions and short-comings in the game's startup
 
-    
-    ask questions from nov 26 2001 and more recent
-    OR
-    recalculate the value of older questions to updated amounts (might be best to just use newer questions to avoid outdated information)
-
 
     do not ask questions that reference music, pictures, or videos
-
-
-    define method to validate that a category is populated with questions that have point values and that have answers
-    (if invalid, could make a method based on Fetcher.fetch_six_categories that only gets one new category)
 
 
     validate user answers to (closely) match actual answers
@@ -59,9 +45,6 @@ stretch goals:
 
 
     allow user to choose number of questions per category
-
-
-    allow user to choose which year the questions come from
 
 
     add a timer to questions that counts down, waiting for an entry of any character to "buzz in" before timer expires. if timer expires, the question is lost and play continues
