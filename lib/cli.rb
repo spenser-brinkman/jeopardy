@@ -1,26 +1,26 @@
 class CLI
 
   def run
-    clear_screen
-    sleep(1)                               #1
-    puts "This!".center(172)
-    31.times {puts ""}
-    sleep(1.3)                               #2
-    clear_screen
-    puts "Is!".center(172)
-    31.times {puts ""}
-    sleep(1.3)                               #2
-    clear_screen
-    Art.title
-    22.times {puts ""}
-    sleep(2)                               #3
-    self.gather_and_validate    #turn this on
-    # self.gather_categories        #turn these off
-    # self.gather_clues             #turn these off
+    # clear_screen
+    # sleep(1)                               #1
+    # puts "This!".center(172)
+    # 31.times {puts ""}
+    # sleep(1.3)                               #2
+    # clear_screen
+    # puts "Is!".center(172)
+    # 31.times {puts ""}
+    # sleep(1.3)                               #2
+    # clear_screen
+    # Art.title
+    # 22.times {puts ""}
+    # sleep(2)                               #3
+    # self.gather_and_validate    #turn this on
+    self.gather_categories        #turn these off
+    self.gather_clues             #turn these off
     self.prompt_for_setup
-    clear_screen
     self.prompt_for_category
     self.prompt_for_value
+    self.get_clue
   end
 
   def gather_categories
@@ -50,23 +50,17 @@ class CLI
       @i += 1
       self.gather_categories
       self.gather_clues
-      break if Clue.all[0..30].all? {|c| c.instance_variable_get(:@point_value) != nil}
+      break if self.valid?
     end
   end
 
-  # def gather_and_validate
-  #   @i = 0
-  #   validator = Clue.all[0..30].all? {|c| c.instance_variable_get(:@point_value) != nil}
-  #   until validator
-  #     self.gather_categories
-  #     self.gather_clues
-  #     @i += 1
-  #     i.times {print "."}
-  #   end
-  # end
-
-
-
+  def valid?
+    if Clue.all[0..30].all? {|c| c.instance_variable_get(:@point_value) != nil && c.instance_variable_get(:@invalid_count) == nil}
+      true
+    else
+      false
+    end
+  end
 
   def prompt_for_setup
     loop do
@@ -91,11 +85,12 @@ class CLI
       puts ""
       puts "Would you like to play a game with these categories? (Y/N)".center(172)
       20.times {puts ""}
-      player_input = gets.chomp.capitalize
+      setup_input = gets.chomp.capitalize
       sleep(0.3)
-      if player_input == "Y"
+      if setup_input == "Y"
+        clear_screen
         break      
-      elsif player_input == "N"
+      elsif setup_input == "N"
         clear_screen
         puts "Okay, let's get a new set of categories.".center(172)
         31.times {puts ""}
@@ -116,30 +111,31 @@ class CLI
     end
   end
 
-  # https://www.rubyguides.com/2012/01/ruby-string-formatting/ to clean this vvvv upd
+  # https://www.rubyguides.com/2012/01/ruby-string-formatting/ to clean this vvvv up
 
   def generate_board
-    @row_one = ["#{Category.all[0].clues[0].point_value}", "#{Category.all[0].clues[1].point_value}", "#{Category.all[0].clues[2].point_value}", "#{Category.all[0].clues[3].point_value}", "#{Category.all[0].clues[4].point_value}"]
-    @row_two = ["#{Category.all[1].clues[0].point_value}", "#{Category.all[1].clues[1].point_value}", "#{Category.all[1].clues[2].point_value}", "#{Category.all[1].clues[3].point_value}", "#{Category.all[1].clues[4].point_value}"]
-    @row_three = ["#{Category.all[2].clues[0].point_value}", "#{Category.all[2].clues[1].point_value}", "#{Category.all[2].clues[2].point_value}", "#{Category.all[2].clues[3].point_value}", "#{Category.all[2].clues[4].point_value}"]
-    @row_four = ["#{Category.all[3].clues[0].point_value}", "#{Category.all[3].clues[1].point_value}", "#{Category.all[3].clues[2].point_value}", "#{Category.all[3].clues[3].point_value}", "#{Category.all[3].clues[4].point_value}"]
-    @row_five = ["#{Category.all[4].clues[0].point_value}", "#{Category.all[4].clues[1].point_value}", "#{Category.all[4].clues[2].point_value}", "#{Category.all[4].clues[3].point_value}", "#{Category.all[4].clues[4].point_value}"]
-    @row_six = ["#{Category.all[5].clues[0].point_value}", "#{Category.all[5].clues[1].point_value}", "#{Category.all[5].clues[2].point_value}", "#{Category.all[5].clues[3].point_value}", "#{Category.all[5].clues[4].point_value}"]
+    @row_one = [Category.all[0].clues[0], Category.all[0].clues[1], Category.all[0].clues[2], Category.all[0].clues[3], Category.all[0].clues[4]]
+    @row_two = [Category.all[1].clues[0], Category.all[1].clues[1], Category.all[1].clues[2], Category.all[1].clues[3], Category.all[1].clues[4]]
+    @row_three = [Category.all[2].clues[0], Category.all[2].clues[1], Category.all[2].clues[2], Category.all[2].clues[3], Category.all[2].clues[4]]
+    @row_four = [Category.all[3].clues[0], Category.all[3].clues[1], Category.all[3].clues[2], Category.all[3].clues[3], Category.all[3].clues[4]]
+    @row_five = [Category.all[4].clues[0], Category.all[4].clues[1], Category.all[4].clues[2], Category.all[4].clues[3], Category.all[4].clues[4]]
+    @row_six = [Category.all[5].clues[0], Category.all[5].clues[1], Category.all[5].clues[2], Category.all[5].clues[3], Category.all[5].clues[4]]
+    @all_rows = [@row_one, @row_two, @row_three, @row_four, @row_five, @row_six]
   end
 
   def display_starting_board
     self.gap
-    puts "#{Category.all[1].name}   [1]".rjust(79) + "    ----    " + "#{@row_one[0]} | #{@row_one[1]} | #{@row_one[2]} | #{@row_one[3]} | #{@row_one[4]}"
+    puts "#{Category.all[0].name}   [1]".rjust(79) + "    ----    " + "#{@row_one[0].point_value} | #{@row_one[1].point_value} | #{@row_one[2].point_value} | #{@row_one[3].point_value} | #{@row_one[4].point_value}"
     self.gap
-    puts "#{Category.all[2].name}   [2]".rjust(79) + "    ----    " + "#{@row_two[0]} | #{@row_two[1]} | #{@row_two[2]} | #{@row_two[3]} | #{@row_two[4]}"
+    puts "#{Category.all[1].name}   [2]".rjust(79) + "    ----    " + "#{@row_two[0].point_value} | #{@row_two[1].point_value} | #{@row_two[2].point_value} | #{@row_two[3].point_value} | #{@row_two[4].point_value}"
     self.gap
-    puts "#{Category.all[3].name}   [3]".rjust(79) + "    ----    " + "#{@row_three[0]} | #{@row_three[1]} | #{@row_three[2]} | #{@row_three[3]} | #{@row_three[4]}"
+    puts "#{Category.all[2].name}   [3]".rjust(79) + "    ----    " + "#{@row_three[0].point_value} | #{@row_three[1].point_value} | #{@row_three[2].point_value} | #{@row_three[3].point_value} | #{@row_three[4].point_value}"
     self.gap
-    puts "#{Category.all[4].name}   [4]".rjust(79) + "    ----    " + "#{@row_four[0]} | #{@row_four[1]} | #{@row_four[2]} | #{@row_four[3]} | #{@row_four[4]}"
+    puts "#{Category.all[3].name}   [4]".rjust(79) + "    ----    " + "#{@row_four[0].point_value} | #{@row_four[1].point_value} | #{@row_four[2].point_value} | #{@row_four[3].point_value} | #{@row_four[4].point_value}"
     self.gap
-    puts "#{Category.all[5].name}   [5]".rjust(79) + "    ----    " + "#{@row_five[0]} | #{@row_five[1]} | #{@row_five[2]} | #{@row_five[3]} | #{@row_five[4]}"
+    puts "#{Category.all[4].name}   [5]".rjust(79) + "    ----    " + "#{@row_five[0].point_value} | #{@row_five[1].point_value} | #{@row_five[2].point_value} | #{@row_five[3].point_value} | #{@row_five[4].point_value}"
     self.gap
-    puts "#{Category.all[0].name}   [6]".rjust(79) + "    ----    " + "#{@row_six[0]} | #{@row_six[1]} | #{@row_six[2]} | #{@row_six[3]} | #{@row_six[4]}"
+    puts "#{Category.all[5].name}   [6]".rjust(79) + "    ----    " + "#{@row_six[0].point_value} | #{@row_six[1].point_value} | #{@row_six[2].point_value} | #{@row_six[3].point_value} | #{@row_six[4].point_value}"
     self.gap
   end
   
@@ -147,52 +143,25 @@ class CLI
     generate_board
     puts "Today's categories are:".center(172)
     loop do
-      player_input = ""
       display_starting_board
       puts "Please enter 1-6 to select a category.".center(172)
       15.times {puts ""}
-      player_input = gets.chomp.to_i
-      if player_input == 1
-        clear_screen
-        puts "#{Category.all[1].name}".rjust(79) + "    ----    " + "#{@row_one[0]} | #{@row_one[1]} | #{@row_one[2]} | #{@row_one[3]} | #{@row_one[4]}"
+      @category_input = gets.chomp.to_i
+      clear_screen
+      if @category_input.between?(1, 6) # and category still has clues to answer
+        @category_input -= 1
+        puts "#{Category.all[@category_input].name}".center(172)
+        gap
+        puts "#{@all_rows[@category_input][0].point_value}   [1]".center(172)
         puts ""
-        puts "".rjust(79) + "            [1]   [2]   [3]   [4]   [5] "
-        29.times {puts ""}
-        break
-      elsif player_input == 2
-        clear_screen
-        puts "#{Category.all[2].name}".rjust(79) + "    ----    " + "#{@row_two[0]} | #{@row_two[1]} | #{@row_two[2]} | #{@row_two[3]} | #{@row_two[4]}"
+        puts "#{@all_rows[@category_input][1].point_value}   [2]".center(172)
         puts ""
-        puts "".rjust(79) + "            [1]   [2]   [3]   [4]   [5] "
-        29.times {puts ""}
-        break
-      elsif player_input == 3
-        clear_screen
-        puts "#{Category.all[3].name}".rjust(79) + "    ----    " + "#{@row_three[0]} | #{@row_three[1]} | #{@row_three[2]} | #{@row_three[3]} | #{@row_three[4]}"
+        puts "#{@all_rows[@category_input][2].point_value}   [3]".center(172)
         puts ""
-        puts "".rjust(79) + "            [1]   [2]   [3]   [4]   [5] "
-        29.times {puts ""}
-        break
-      elsif player_input == 4
-        clear_screen
-        puts "#{Category.all[4].name}".rjust(79) + "    ----    " + "#{@row_four[0]} | #{@row_four[1]} | #{@row_four[2]} | #{@row_four[3]} | #{@row_four[4]}"
+        puts "#{@all_rows[@category_input][3].point_value}   [4]".center(172)
         puts ""
-        puts "".rjust(79) + "            [1]   [2]   [3]   [4]   [5] "
-        29.times {puts ""}
-        break
-      elsif player_input == 5
-        clear_screen
-        puts "#{Category.all[5].name}".rjust(79) + "    ----    " + "#{@row_five[0]} | #{@row_five[1]} | #{@row_five[2]} | #{@row_five[3]} | #{@row_five[4]}"
-        puts ""
-        puts "".rjust(79) + "            [1]   [2]   [3]   [4]   [5] "
-        29.times {puts ""}
-        break
-      elsif player_input == 6
-        clear_screen
-        puts "#{Category.all[0].name}".rjust(79) + "    ----    " + "#{@row_six[0]} | #{@row_six[1]} | #{@row_six[2]} | #{@row_six[3]} | #{@row_six[4]}"
-        puts ""
-        puts "".rjust(79) + "            [1]   [2]   [3]   [4]   [5] "
-        29.times {puts ""}
+        puts "#{@all_rows[@category_input][4].point_value}   [5]".center(172)
+        gap
         break
       else
         clear_screen
@@ -204,15 +173,20 @@ class CLI
   def prompt_for_value
     loop do
       puts "Please enter a number corresponding to the point value of an available clue.".center(172)
-      user_input = gets.chomp.to_i
-      user_input -= 1
-      if user_input.between?(0, 4) # && user_input.exists?
-        puts "A"
+      22.times {puts ""}
+      @value_input = gets.chomp.to_i
+      @value_input -= 1
+      if @value_input.between?(0, 4) # && user_input still exists as an index?
+        break
       else
-        puts "Sorry, you need to enter a number corresponding to one of the categories listed here:".center(172)
+        puts "Sorry, you need to enter a number corresponding to one of the clues listed here:".center(172)
       end
     end
   end
+
+  def get_clue
+  end
+
 
   def gap
     puts ""

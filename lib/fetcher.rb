@@ -28,7 +28,8 @@ class Fetcher
         question = clue["question"]
         answer = clue["answer"]
         point_value = clue["value"]
-        Clue.new(year, question, answer, point_value, category)
+        invalid_count = clue["invalid_count"]
+        Clue.new(year, question, answer, point_value, category, invalid_count)
       end
     end
   end
