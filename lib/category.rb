@@ -15,6 +15,10 @@ class Category
     @@all
   end
 
+  def clear_all
+    @@all.clear
+  end
+  
   def clues
     Clue.all.select {|c| c.category == self}
   end

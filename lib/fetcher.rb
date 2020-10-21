@@ -34,3 +34,34 @@ class Fetcher
     end
   end
 end
+
+  # refactor:
+
+  # def fetch_categories
+  #   until self.valid_category?
+  #     Category.clear_all
+  #     parsed_url = URI.parse(BASE_URL + "api/categories?offset=#{rand(1..18310)}&count=100")
+  #     response = Net::HTTP.get_response(parsed_url)
+  #     array_of_100_clues = JSON.parse(response.body)
+  #     until 30_clues.count == 30 do
+  #       array_of_100_clues.each do |clue|
+
+            
+
+
+  #       Category.new(name, year, id)
+
+
+  # def valid_category?
+  #   # should check that there are five clues with matching airdates that all have a question, answer, and point_value
+  # end
+
+# end
+
+# http://jservice.io/api/clues?offset=156709&count=100
+# ^^this grabs 100 clues
+
+# valid?
+# for 100array, fetch the first thirty with matching airdate
+#   check to see that all 30 have value for points, question, answer, and are not invald
+#   if they are invalid, send back false

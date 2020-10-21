@@ -14,6 +14,9 @@ mvp:
 
 stretch goals:
     
+    fetcher is pulling clues from different dates out of larger categories. first fetch thinks 2003, let me go grab five /random/ clues from the category! oops, they're wrong dates, oh well.
+
+    
     restrict clues to all load from the same episode only
 
     

@@ -1,26 +1,32 @@
 class CLI
 
   def run
-    # clear_screen
-    # sleep(1)                               #1
-    # puts "This!".center(172)
-    # 31.times {puts ""}
-    # sleep(1.3)                               #2
-    # clear_screen
-    # puts "Is!".center(172)
-    # 31.times {puts ""}
-    # sleep(1.3)                               #2
-    # clear_screen
-    # Art.title
-    # 22.times {puts ""}
-    # sleep(2)                               #3
-    # self.gather_and_validate    #turn this on
-    self.gather_categories        #turn these off
-    self.gather_clues             #turn these off
+    self.intro
+    self.gather_and_validate    #turn this on
+    # self.gather_categories        #turn these off
+    # self.gather_clues             #turn these off
     self.prompt_for_setup
     self.prompt_for_category
     self.prompt_for_value
     self.get_clue
+    self.prompt_for_answer
+    self.display_answer
+  end
+
+  def intro
+    clear_screen
+    sleep(1)
+    puts "This!".center(172)
+    31.times {puts ""}
+    sleep(1.3)
+    clear_screen
+    puts "Is!".center(172)
+    31.times {puts ""}
+    sleep(1.3)
+    clear_screen
+    Art.title
+    22.times {puts ""}
+    sleep(2)
   end
 
   def gather_categories
@@ -66,9 +72,7 @@ class CLI
     loop do
       clear_screen
       puts "The following categories are from the year #{Category.all[0].year}.".center(172)
-      puts ""
-      puts ""
-      puts ""
+      gap
       puts "#{Category.all[0].name}".center(172)
       puts ""
       puts "#{Category.all[1].name}".center(172)
@@ -80,9 +84,7 @@ class CLI
       puts "#{Category.all[4].name}".center(172)
       puts ""
       puts "#{Category.all[5].name}".center(172)
-      puts ""
-      puts ""
-      puts ""
+      gap
       puts "Would you like to play a game with these categories? (Y/N)".center(172)
       20.times {puts ""}
       setup_input = gets.chomp.capitalize
@@ -150,7 +152,7 @@ class CLI
       clear_screen
       if @category_input.between?(1, 6) # and category still has clues to answer
         @category_input -= 1
-        puts "#{Category.all[@category_input].name}".center(172)
+        puts "#{Category.all[@category_input].name} (#{Category.all[@category_input].year})".center(172)
         gap
         puts "#{@all_rows[@category_input][0].point_value}   [1]".center(172)
         puts ""
@@ -186,17 +188,45 @@ class CLI
 
   def get_clue
     clear_screen
-    puts "For #{@all_rows[@category_input][0].point_value} points,".center(172)
+    puts "(#{@all_rows[@category_input][@value_input].year})".center(172)
     puts ""
-    puts "here is your clue from the category".center(172)
+    puts "For #{@all_rows[@category_input][@value_input].point_value} points,".center(172)
+    puts ""
+    puts "from the category".center(172)
     puts ""
     puts "\"#{Category.all[@category_input].name}\":".center(172)
     gap
-    puts "#{@all_rows[@category_input][0].question}".center(172)
+    puts "#{@all_rows[@category_input][@value_input].question}".center(172)
     26.times {puts ""}
-    sleep(3)
   end
 
+  def prompt_for_answer
+    @answer_input = gets
+  end
+
+  def display_answer
+    clear_screen
+    puts "(#{@all_rows[@category_input][@value_input].year})".center(172)
+    puts ""
+    puts "For #{@all_rows[@category_input][@value_input].point_value} points,".center(172)
+    puts ""
+    puts "from the category".center(172)
+    puts ""
+    puts "\"#{Category.all[@category_input].name}\":".center(172)
+    gap
+    puts "#{@all_rows[@category_input][@value_input].question}".center(172)
+    gap
+    sleep(1)
+    puts "You answered:".center(172)
+    puts ""
+    puts "#{@answer_input}".center(172)
+    sleep(1)
+    puts ""
+    puts "The correct answer is:".center(172)
+    puts ""
+    puts "#{@all_rows[@category_input][@value_input].answer}".center(172)
+    16.times {puts ""}
+  end
 
   def gap
     puts ""
