@@ -1,9 +1,36 @@
 class CLI
 
-  def run_2
-    self.intro
-    Fetcher.fetch_clues
+  def initialize
+    @category_one = []
+    @category_two = []
+    @category_three = []
+    @category_four = []
+    @category_five = []
+    @category_six = []
   end
+
+  def run_2
+    # self.intro
+    Fetcher.fetch_clues
+    Fetcher.organize_clues
+    current_board
+  end
+
+
+
+
+  def current_board
+    Art.logo_small
+  end
+
+
+
+
+
+
+
+
+
 
 
 

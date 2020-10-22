@@ -2,15 +2,12 @@ class Clue
   
   @@all = []
 
-  attr_accessor :year, :question, :answer, :point_value, :category, :invalid_count
+  attr_accessor :question, :answer, :point_value, :category
 
-  def initialize(year, question, answer, point_value, category, invalid_count)
-    @year = year
+  def initialize(question, answer, point_value)
     @question = question
     @answer = answer
     @point_value = point_value
-    @category = category
-    @invalid_count = invalid_count
     @@all << self
   end
 
@@ -18,4 +15,8 @@ class Clue
     @@all
   end
 
+  def category_name
+    category.name if @category
+  end
+  
 end
