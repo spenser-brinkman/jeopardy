@@ -2,75 +2,79 @@ class CLI
 
   def run_2
     # self.intro
-    # Fetcher.fetch_clues
-    board
-  end
-  def board
-    puts "█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████ ".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█                           █                           █                           █                           █                           █                           █".center(172)
-    puts "█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████".center(172)
-    gets
+    Fetcher.fetch_clues
+    self.prompt_for_setup
+    Category.all.each do |cat|
+      multiline_cat_name = cat.name.scan(/.{1,20}\b/).join("\n")
+      binding.pry
+    end
   end
 
+  def intro
+    clear_screen
+    sleep(1)
+    puts "This!".center(172)
+    31.times {puts ""}
+    sleep(1.3)
+    clear_screen
+    puts "Is!".center(172)
+    31.times {puts ""}
+    sleep(1.3)
+    clear_screen
+    Art.title
+    22.times {puts ""}
+    sleep(2)
+  end
 
+  def prompt_for_setup
+    loop do
+      clear_screen
+      puts "The following categories are from an episode which aired #{Category.all[0].date}.".center(172)
+      gap
+      Category.all.each do |cat|
+        puts "#{cat.name}".center(172)
+        puts ""
+      end
+      gap
+      puts "Would you like to play a game with these categories? (Y/N)".center(172)
+      20.times {puts ""}
+      setup_input = gets.chomp.capitalize
+      sleep(0.3)
+      if setup_input == "Y"
+        clear_screen
+        break      
+      elsif setup_input == "N"
+        clear_screen
+        puts "Okay, let's get a new set of categories.".center(172)
+        31.times {puts ""}
+        sleep(1)
+        Fetcher.fetch_clues
+      else
+        clear_screen
+        puts "Sorry, you'll need to enter:".center(172)
+        puts ""
+        puts "Y for 'yes'".center(172)
+        puts ""
+        puts "or".center(172)
+        puts ""
+        puts "N for 'no'".center(172)
+        27.times {puts ""}
+        sleep(2)
+      end
+    end
+  end
 
+  def category_empty?
+    Category.all.each do |cat|
+      if cat.clues.empty?
+        cat.name = ""
+      end
+    end
+  end
 
-
+  def answer_clue
+    clue.points = ""
+  end
 
 
 
@@ -106,105 +110,7 @@ class CLI
     self.display_answer
   end
 
-  def intro
-    clear_screen
-    sleep(1)
-    puts "This!".center(172)
-    31.times {puts ""}
-    sleep(1.3)
-    clear_screen
-    puts "Is!".center(172)
-    31.times {puts ""}
-    sleep(1.3)
-    clear_screen
-    Art.title
-    22.times {puts ""}
-    sleep(2)
-  end
-
-  def gather_categories
-    Category.all.clear
-    Fetcher.fetch_six_categories
-  end
-
-  def gather_clues
-    Clue.all.clear
-    Fetcher.fetch_thirty_clues
-  end
-
-  def gather_and_validate
-    @i = 1
-    loop do
-      clear_screen
-      puts "Loading categories and validating clues.".center(172)
-      puts ""
-      if @i % 3 == 1
-        puts ".".rjust(85)
-      elsif @i % 3 == 2
-        puts "..".rjust(86)
-      elsif @i % 3 == 0
-        puts "...".rjust(87)
-      end
-      29.times {puts ""}
-      @i += 1
-      self.gather_categories
-      self.gather_clues
-      break if self.valid?
-    end
-  end
-
-  def valid?
-    if Clue.all[0..30].all? {|c| c.instance_variable_get(:@point_value) != nil && c.instance_variable_get(:@invalid_count) == nil}
-      true
-    else
-      false
-    end
-  end
-
-  def prompt_for_setup
-    loop do
-      clear_screen
-      puts "The following categories are from the year #{Category.all[0].year}.".center(172)
-      gap
-      puts "#{Category.all[0].name}".center(172)
-      puts ""
-      puts "#{Category.all[1].name}".center(172)
-      puts ""
-      puts "#{Category.all[2].name}".center(172)
-      puts ""
-      puts "#{Category.all[3].name}".center(172)
-      puts ""
-      puts "#{Category.all[4].name}".center(172)
-      puts ""
-      puts "#{Category.all[5].name}".center(172)
-      gap
-      puts "Would you like to play a game with these categories? (Y/N)".center(172)
-      20.times {puts ""}
-      setup_input = gets.chomp.capitalize
-      sleep(0.3)
-      if setup_input == "Y"
-        clear_screen
-        break      
-      elsif setup_input == "N"
-        clear_screen
-        puts "Okay, let's get a new set of categories.".center(172)
-        31.times {puts ""}
-        sleep(1)
-        self.gather_and_validate
-      else
-        clear_screen
-        puts "Sorry, you'll need to enter:".center(172)
-        puts ""
-        puts "Y for 'yes'".center(172)
-        puts ""
-        puts "or".center(172)
-        puts ""
-        puts "N for 'no'".center(172)
-        27.times {puts ""}
-        sleep(2)
-      end
-    end
-  end
+  
 
   # https://www.rubyguides.com/2012/01/ruby-string-formatting/ to clean this vvvv up
 

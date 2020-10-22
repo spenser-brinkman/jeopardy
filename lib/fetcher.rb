@@ -5,13 +5,26 @@ class Fetcher
   BASE_URL = "http://jservice.io/"
 
   def self.fetch_clues
+    Clue.clear_all
+    Category.clear_all
     clues_array = []
+    i = 1
     until clues_array.count == 30 && clues_array.all? {|c| c["answer"] != "" && c["question"] != "" && c["invalid_count"] == nil}
+      puts "Loading categories and validating clues.".center(172)
+      puts ""
+      if i % 3 == 1
+        puts ".".rjust(85)
+      elsif i % 3 == 2
+        puts "..".rjust(86)
+      elsif i % 3 == 0
+        puts "...".rjust(87)
+      end
+      29.times {puts ""}
+      i += 1
       @date = self.randomize_date
       parsed_url = URI.parse(BASE_URL + "api/clues?min_date=#{@date}&max_date=#{@date}")
       response = Net::HTTP.get_response(parsed_url)
       clues_array = JSON.parse(response.body)
-      puts "."                                              # deleteme
     end
     category_one, clues_array = clues_array.partition {|clue| clue["category_id"] == clues_array[0]["category_id"]}
     category_two, clues_array = clues_array.partition {|clue| clue["category_id"] == clues_array[0]["category_id"]}
@@ -26,12 +39,13 @@ class Fetcher
   def self.organize_clues
     @category_list.each do |category|
       category_name = category[0]["category"]["title"].split(" ").map(&:capitalize).join(" ")
-      new_category = Category.new(category_name, @date)
+      date = Date.parse(@date).strftime('%B %-d, %Y')
+      new_category = Category.new(category_name, date)
       category.each do |clue|
         question = clue["question"]
         answer = clue["answer"]
-        point_value = clue["value"].to_s
-        new_clue = Clue.new(question, answer, point_value)
+        points = clue["value"].to_s
+        new_clue = Clue.new(question, answer, points)
         new_clue.category = new_category
       end
     end

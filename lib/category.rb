@@ -14,7 +14,7 @@ class Category
     @@all
   end
 
-  def clear_all
+  def self.clear_all
     @@all.clear
   end
   
@@ -28,8 +28,8 @@ class Category
     clue.category = self
   end
 
-  def new_clue_by_category(question, answer, point_value)
-    clue = Clue.new(question, answer, point_value)
+  def new_clue_by_category(question, answer, points)
+    clue = Clue.new(question, answer, points)
     add_category_to_clue(clue)
   end
 
