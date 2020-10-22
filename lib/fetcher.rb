@@ -20,6 +20,7 @@ class Fetcher
     category_five, clues_array = clues_array.partition {|clue| clue["category_id"] == clues_array[0]["category_id"]}
     category_six, clues_array = clues_array.partition {|clue| clue["category_id"] == clues_array[0]["category_id"]}
     @category_list = [category_one, category_two, category_three, category_four, category_five, category_six]
+    self.organize_clues
   end
 
   def self.organize_clues
@@ -36,12 +37,6 @@ class Fetcher
     end
   end
 
-
-
-
-
-
-  
   # vv   The first episode of Jeopardy to use the current dollar amounts aired on Nov 26, 2001.   vv
   # vv          The most recent episode available from this API aired on Mar 31, 2015             vv
   
