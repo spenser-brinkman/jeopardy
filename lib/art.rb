@@ -131,7 +131,7 @@ class Art
     puts " █                           █                           █                           █                           █                           █                           █"
     puts " █                           █                           █                           █                           █                           █                           █"
     puts " █                           █                           █                           █                           █                           █                           █"
-    puts " █                           █                           █                           █                           █                           █                           █"
+    puts " █         #{CLI.get_points(0, 0)}                  █                           █                           █                           █                           █                           █"
     puts " █                           █                           █                           █                           █                           █                           █"
     puts " █                           █                           █                           █                           █                           █                           █"
     puts " █                           █                           █                           █                           █                           █                           █"

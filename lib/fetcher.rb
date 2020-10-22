@@ -21,7 +21,7 @@ class Fetcher
       end
       29.times {puts ""}
       i += 1
-      @date = self.randomize_date
+      self.randomize_date
       parsed_url = URI.parse(BASE_URL + "api/clues?min_date=#{@date}&max_date=#{@date}")
       response = Net::HTTP.get_response(parsed_url)
       clues_array = JSON.parse(response.body)
@@ -70,6 +70,6 @@ class Fetcher
       month = rand(1..12)
       day = rand(1..31)
     end
-    random_date = "#{year.to_s}-#{month.to_s}-#{day.to_s}"
+    @date = "#{year.to_s}-#{month.to_s}-#{day.to_s}"
   end
 end

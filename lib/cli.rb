@@ -5,6 +5,7 @@ class CLI
     Fetcher.fetch_clues
     self.prompt_for_setup
     Art.board
+    binding.pry
   end
 
   def intro
@@ -72,12 +73,20 @@ class CLI
         line != nil ? multiline_cat_name[i] = line : nil
         i += 1
       end
-      multiline_cat_name[x]
+      test = multiline_cat_name.map do |line|
+        line.delete_suffix(" ")
+      end
+      test[x]
     end
   end
 
+  def disp_clue(clue, x)
+  end
+    
+  def self.get_points(cat_i, clue_i)
+    puts Category.all[cat_i].clues[clue_i].points
+  end
 
-  
 
   def answer_clue
     clue.points = ""
