@@ -4,10 +4,7 @@ class CLI
     # self.intro
     Fetcher.fetch_clues
     self.prompt_for_setup
-    Category.all.each do |cat|
-      multiline_cat_name = cat.name.scan(/.{1,20}\b/).join("\n")
-      binding.pry
-    end
+    Art.board
   end
 
   def intro
@@ -64,13 +61,23 @@ class CLI
     end
   end
 
-  def category_empty?
-    Category.all.each do |cat|
-      if cat.clues.empty?
-        cat.name = ""
+  def self.disp_cat(category, x)
+    if category.category_empty?
+      puts ""
+    else
+      multiline_cat_name = ["", "", ""]
+      i = 0
+      multiline_cat_name.map do |line|
+        line = category.name.scan(/.{1,20}\b/)[i]
+        line != nil ? multiline_cat_name[i] = line : nil
+        i += 1
       end
+      multiline_cat_name[x]
     end
   end
+
+
+  
 
   def answer_clue
     clue.points = ""

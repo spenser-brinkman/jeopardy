@@ -36,4 +36,9 @@ class Category
   def clues
     Clue.all.select {|c| c.category == self}
   end
+
+  def category_empty?
+    self.clues.empty? ? true : false
+  end
+
 end
