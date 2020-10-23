@@ -6,7 +6,7 @@ class CLI
     self.prompt_for_setup
     # self.sort_points
     Art.board
-    # self.prompt_for_clue_selection
+    self.prompt_for_clue_selection
 
   end
 
@@ -80,13 +80,6 @@ class CLI
     end
   end
 
-  def disp_clue(clue, x)
-  end
-
-# Category.all.each do |c|
-#   if c.clues[0-4].points is 0, then that activates a daily double
-
-
   def self.get_points(cat_i, points_to_show, getter_input)
     Category.all[cat_i].clues.each do |c|
       if c.helper_daily_double == nil
@@ -107,40 +100,34 @@ class CLI
     points_to_show
   end
 
+
+
+
+  #stopped here, figuring out how to get clue selection to properly grab a clue
+
   def prompt_for_clue_selection
-    CLI.get_points(0, 200, "A1")
-    CLI.get_points(1, 200, "B1")
-    CLI.get_points(2, 200, "C1")
-    CLI.get_points(3, 200, "D1")
-    CLI.get_points(4, 200, "E1")
-    CLI.get_points(5, 200, "F1")
-    CLI.get_points(0, 400, "A2")
-    CLI.get_points(1, 400, "B2")
-    CLI.get_points(2, 400, "C2")
-    CLI.get_points(3, 400, "D2")
-    CLI.get_points(4, 400, "E2")
-    CLI.get_points(5, 400, "F2")
-    CLI.get_points(0, 600, "A3")
-    CLI.get_points(1, 600, "B3")
-    CLI.get_points(2, 600, "C3")
-    CLI.get_points(3, 600, "D3")
-    CLI.get_points(4, 600, "E3")
-    CLI.get_points(5, 600, "F3")
-    CLI.get_points(0, 800, "A4")
-    CLI.get_points(1, 800, "B4")
-    CLI.get_points(2, 800, "C4")
-    CLI.get_points(3, 800, "D4")
-    CLI.get_points(4, 800, "E4")
-    CLI.get_points(5, 800, "F4")
-    CLI.get_points(0, 1000, "A5")
-    CLI.get_points(1, 1000, "B5")
-    CLI.get_points(2, 1000, "C5")
-    CLI.get_points(3, 1000, "D5")
-    CLI.get_points(4, 1000, "E5")
-    CLI.get_points(5, 1000, "F5")
-    binding.pry
+    puts "Please enter a letter-number combination corresponding to an available clue.".center(172)
+    loop do
+      clue_choice = gets.chomp.capitalize
+      chosen_clue = ""
+      chosen_clue = Clue.all.detect {|clue| clue.getter_input == clue_choice }
+      binding.pry
+      if chosen_clue.answered == true
+        puts "Sorry, that clue has already been selected. Please enter a letter-number combination corresponding to an available clue.".center(172)
+      elsif chosen_clue = ""
+        puts "Sorry, that was an invalid selection. Please enter a letter-number combination corresponding to an available clue.".center(172)
+      elsif chosen_clue.answered == false
+        self.display_clue(chosen_clue)
+        break
+      end 
+    end
   end
     
+  def display_clue(chosen_clue)
+    puts "#{chosen_clue.question}"  
+    puts "#{chosen_clue.points}"
+  end
+
 
 
   def answer_clue(clue)

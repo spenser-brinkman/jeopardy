@@ -52,7 +52,7 @@ def self.board
   puts " █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████"
   puts ""
   puts ""
-  puts "Please enter the letter-number combination for the corresponding clue you would like to see.".center(172)
+  puts "Please enter a letter-number combination corresponding to an available clue.".center(172)
   puts ""
   puts ""
   gets

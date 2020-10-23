@@ -168,11 +168,5 @@ class Art
     puts " █                           █                           █                           █                           █                           █                           █"
     puts " █                           █                           █                           █                           █                           █                           █"
     puts " █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████"
-    puts ""
-    puts ""
-    puts "Please enter the letter-number combination for the corresponding clue you would like to see.".center(172)
-    puts ""
-    puts ""
-    gets
   end
 end
