@@ -2,12 +2,14 @@ class Clue
   
   @@all = []
 
-  attr_accessor :question, :answer, :points, :category
+  attr_accessor :question, :answer, :points, :category, :helper_daily_double, :scoring_daily_double
 
-  def initialize(question, answer, points)
+  def initialize(question, answer, points, helper_daily_double, scoring_daily_double)
     @question = question
     @answer = answer
     @points = points
+    @helper_daily_double = helper_daily_double
+    @scoring_daily_double = scoring_daily_double
     @@all << self
   end
 

@@ -44,8 +44,11 @@ class Fetcher
       category.each do |clue|
         question = clue["question"]
         answer = clue["answer"]
-        points = clue["value"].to_s
-        new_clue = Clue.new(question, answer, points)
+        points = clue["value"]
+        points = 0 if points == nil
+        helper_daily_double = true if points == 0
+        scoring_daily_double = true if points == 0
+        new_clue = Clue.new(question, answer, points, helper_daily_double, scoring_daily_double)
         new_clue.category = new_category
       end
     end

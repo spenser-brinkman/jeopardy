@@ -4,8 +4,10 @@ class CLI
     # self.intro
     Fetcher.fetch_clues
     self.prompt_for_setup
-    Art.board
-    binding.pry
+    # self.sort_points
+    # Art.board
+    self.prompt_for_clue_selection
+
   end
 
   def intro
@@ -82,16 +84,75 @@ class CLI
 
   def disp_clue(clue, x)
   end
-    
-  def self.get_points(cat_i, clue_i)
-    puts Category.all[cat_i].clues[clue_i].points
+
+# Category.all.each do |c|
+#   if c.clues[0-4].points is 0, then that activates a daily double
+
+
+  def get_points(cat_i, points_to_show)
+    Category.all[cat_i].clues.each do |c|
+      if c.helper_daily_double == nil
+        if c.points == points_to_show
+          puts points_to_show
+          break
+        end
+      elsif c.helper_daily_double == true
+        puts points_to_show
+        c.points = points_to_show * 2
+        c.helper_daily_double = false
+      end
+    end
   end
 
+  def prompt_for_clue_selection
+    CLI.get_points(0, 200)
+    CLI.get_points(1, 200)
+    CLI.get_points(2, 200)
+    CLI.get_points(3, 200)
+    CLI.get_points(4, 200)
+    CLI.get_points(5, 200)
+    CLI.get_points(0, 400)
+    CLI.get_points(1, 400)
+    CLI.get_points(2, 400)
+    CLI.get_points(3, 400)
+    CLI.get_points(4, 400)
+    CLI.get_points(5, 400)
+    CLI.get_points(0, 600)
+    CLI.get_points(1, 600)
+    CLI.get_points(2, 600)
+    CLI.get_points(3, 600)
+    CLI.get_points(4, 600)
+    CLI.get_points(5, 600)
+    CLI.get_points(0, 800)
+    CLI.get_points(1, 800)
+    CLI.get_points(2, 800)
+    CLI.get_points(3, 800)
+    CLI.get_points(4, 800)
+    CLI.get_points(5, 800)
+    CLI.get_points(0, 1000)
+    CLI.get_points(1, 1000)
+    CLI.get_points(2, 1000)
+    CLI.get_points(3, 1000)
+    CLI.get_points(4, 1000)
+    CLI.get_points(5, 1000)
+    binding.pry
+  end
+    
 
-  def answer_clue
+
+  def answer_clue(clue)
     clue.points = ""
   end
 
+  def sort_points
+    @sorted_array = []
+    Category.all.each do |cat|
+      sorted_clues = cat.clues
+      sorted_clues.sort_by! {|c| c.points}
+      @sorted_array << sorted_clues
+    end
+    binding.pry
+  end
 
 
 
@@ -112,6 +173,22 @@ class CLI
 
 
 
+
+
+
+
+
+  def gap
+    puts ""
+    puts ""
+    puts ""
+  end
+  
+  def clear_screen
+    60.times do
+      puts ""
+    end
+  end
 
   def run
     # self.intro
@@ -243,17 +320,6 @@ class CLI
     16.times {puts ""}
   end
 
-  def gap
-    puts ""
-    puts ""
-    puts ""
-  end
-  
-  def clear_screen
-    60.times do
-      puts ""
-    end
-  end
 end
 
 
