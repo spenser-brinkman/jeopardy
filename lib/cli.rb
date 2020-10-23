@@ -5,8 +5,8 @@ class CLI
     Fetcher.fetch_clues
     self.prompt_for_setup
     # self.sort_points
-    # Art.board
-    self.prompt_for_clue_selection
+    Art.board
+    # self.prompt_for_clue_selection
 
   end
 
@@ -68,17 +68,15 @@ class CLI
     if category.category_empty?
       puts ""
     else
-      multiline_cat_name = ["", "", ""]
+      multiline_cat_name = ["", "", ""]             #this splits long category names into smaller pieces to be displayed in the board's boxes
       i = 0
       multiline_cat_name.map do |line|
         line = category.name.scan(/.{1,20}\b/)[i]
         line != nil ? multiline_cat_name[i] = line : nil
         i += 1
       end
-      test = multiline_cat_name.map do |line|
-        line.delete_suffix(" ")
-      end
-      test[x]
+      split_string_array = multiline_cat_name.map { |line| line.delete_suffix(" ") }
+      split_string_array[x]
     end
   end
 
@@ -89,52 +87,57 @@ class CLI
 #   if c.clues[0-4].points is 0, then that activates a daily double
 
 
-  def get_points(cat_i, points_to_show)
+  def self.get_points(cat_i, points_to_show, getter_input)
     Category.all[cat_i].clues.each do |c|
       if c.helper_daily_double == nil
         if c.points == points_to_show
-          puts points_to_show
+          c.getter_input = getter_input
           break
         end
       elsif c.helper_daily_double == true
-        puts points_to_show
-        c.points = points_to_show * 2
+        c.points = points_to_show
         c.helper_daily_double = false
+        c.getter_input = getter_input
+      # elsif c.answered == true && c.points.between?(200, 800)
+      #   points_to_show = "   "
+      # elsif c.answered == true && c.points == 1000
+      #   points_to_show = "    "
       end
     end
+    points_to_show
   end
 
   def prompt_for_clue_selection
-    CLI.get_points(0, 200)
-    CLI.get_points(1, 200)
-    CLI.get_points(2, 200)
-    CLI.get_points(3, 200)
-    CLI.get_points(4, 200)
-    CLI.get_points(5, 200)
-    CLI.get_points(0, 400)
-    CLI.get_points(1, 400)
-    CLI.get_points(2, 400)
-    CLI.get_points(3, 400)
-    CLI.get_points(4, 400)
-    CLI.get_points(5, 400)
-    CLI.get_points(0, 600)
-    CLI.get_points(1, 600)
-    CLI.get_points(2, 600)
-    CLI.get_points(3, 600)
-    CLI.get_points(4, 600)
-    CLI.get_points(5, 600)
-    CLI.get_points(0, 800)
-    CLI.get_points(1, 800)
-    CLI.get_points(2, 800)
-    CLI.get_points(3, 800)
-    CLI.get_points(4, 800)
-    CLI.get_points(5, 800)
-    CLI.get_points(0, 1000)
-    CLI.get_points(1, 1000)
-    CLI.get_points(2, 1000)
-    CLI.get_points(3, 1000)
-    CLI.get_points(4, 1000)
-    CLI.get_points(5, 1000)
+    CLI.get_points(0, 200, "A1")
+    CLI.get_points(1, 200, "B1")
+    CLI.get_points(2, 200, "C1")
+    CLI.get_points(3, 200, "D1")
+    CLI.get_points(4, 200, "E1")
+    CLI.get_points(5, 200, "F1")
+    CLI.get_points(0, 400, "A2")
+    CLI.get_points(1, 400, "B2")
+    CLI.get_points(2, 400, "C2")
+    CLI.get_points(3, 400, "D2")
+    CLI.get_points(4, 400, "E2")
+    CLI.get_points(5, 400, "F2")
+    CLI.get_points(0, 600, "A3")
+    CLI.get_points(1, 600, "B3")
+    CLI.get_points(2, 600, "C3")
+    CLI.get_points(3, 600, "D3")
+    CLI.get_points(4, 600, "E3")
+    CLI.get_points(5, 600, "F3")
+    CLI.get_points(0, 800, "A4")
+    CLI.get_points(1, 800, "B4")
+    CLI.get_points(2, 800, "C4")
+    CLI.get_points(3, 800, "D4")
+    CLI.get_points(4, 800, "E4")
+    CLI.get_points(5, 800, "F4")
+    CLI.get_points(0, 1000, "A5")
+    CLI.get_points(1, 1000, "B5")
+    CLI.get_points(2, 1000, "C5")
+    CLI.get_points(3, 1000, "D5")
+    CLI.get_points(4, 1000, "E5")
+    CLI.get_points(5, 1000, "F5")
     binding.pry
   end
     
