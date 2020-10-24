@@ -3,7 +3,7 @@ class CLI
   @@point_total = 0
 
   def run
-    # self.intro
+    self.intro
     Fetcher.fetch_clues
     self.prompt_for_setup
     Clue.assign_getters
@@ -28,6 +28,7 @@ class CLI
     Art.title
     22.times {puts ""}
     sleep(2)
+    clear_screen
   end
 
   def prompt_for_setup
@@ -70,7 +71,6 @@ class CLI
 
   def play
     Art.board
-    binding.pry
     self.select_clue
     self.prompt_for_answer
     self.ask_if_correct
@@ -156,6 +156,11 @@ class CLI
     4.times {puts ""}
   end
 
+
+
+  # @@point_total = 1000
+  # Clue.all.map {|c| c.scoring_daily_double = true}           useful in pry session to set all clues to DD
+
   def daily_double_prompt
     20.times {puts ""}
     puts "You have selected the daily double!".center(172)
@@ -183,30 +188,32 @@ class CLI
         @wager = Integer(@wager)
       rescue ArgumentError
         23.times {puts ""}
-        puts "Sorry, you'll need to enter a number of points to risk.".center(172)
-        2.times {puts ""}
-        puts "You currently have #{@@point_total} points.".center(172)
-        2.times {puts ""}
-        puts "The clue's category is \"#{@chosen_clue.category.name}\", and its original point value was #{@chosen_clue.points}.".center(172)
-        2.times {puts ""}
-        puts "You are able to risk up to #{@max_wager} points.".center(172)
-        2.times {puts ""}
-        puts "You may choose to risk 0 points.".center(172)
-        24.times {puts ""}
+        puts "Sorry, you'll need to enter a number of points to risk on the Daily Double.".center(172)
+        self.daily_double_error_template
         retry
       end
       if @wager <= @max_wager
         @chosen_clue.answered = true
         break
       elsif @wager > @max_wager
-        puts "Sorry, you don't have enough points to risk that many. Please enter a different amount to risk."
+        23.times {puts ""}
+        puts "Sorry, you don't have enough points to risk that many. Please enter a different amount to risk on the Daily Double.".center(172)
+        self.daily_double_error_template
       end
     end
   end
 
 
-  def daily_double_message
-
+  def daily_double_error_template
+    2.times {puts ""}
+    puts "You currently have #{@@point_total} points.".center(172)
+    2.times {puts ""}
+    puts "The clue's category is \"#{@chosen_clue.category.name}\", and its original point value was #{@chosen_clue.points}.".center(172)
+    2.times {puts ""}
+    puts "You are able to risk up to #{@max_wager} points.".center(172)
+    2.times {puts ""}
+    puts "You may choose to risk 0 points.".center(172)
+    24.times {puts ""}
   end
 
 
@@ -281,6 +288,10 @@ class CLI
     puts "Your current point total is #{@@point_total}."
     4.times {puts ""}
   end
+
+  def game_over
+    puts ""
+    puts ""
 
   def gap
     puts ""
