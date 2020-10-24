@@ -1,8 +1,9 @@
 class CLI
-  
-  @@point_total = 0
+  # @@point_total = 0
 
   def run
+    String.color_samples
+    @@point_total = 0
     self.intro
     Fetcher.fetch_clues
     self.prompt_for_setup
@@ -11,59 +12,59 @@ class CLI
       self.play 
     end
     Art.board
+    self.game_over
 
   end
 
   def intro
-    clear_screen
+    60.times {puts ""}
     sleep(1)
+    30.times {puts ""}
     puts "This!".center(172)
-    31.times {puts ""}
+    29.times {puts ""}
     sleep(1.3)
-    clear_screen
+    30.times {puts ""}
     puts "Is!".center(172)
-    31.times {puts ""}
+    29.times {puts ""}
     sleep(1.3)
-    clear_screen
+    20.times {puts ""}
     Art.title
-    22.times {puts ""}
-    sleep(2)
-    clear_screen
+    20.times {puts ""}
+    sleep(3)
   end
 
   def prompt_for_setup
     loop do
-      clear_screen
+      20.times {puts ""}
       puts "The following categories are from an episode which aired #{Category.all[0].date}.".center(172)
-      gap
+      3.times {puts ""}
       Category.all.each do |cat|
         puts "#{cat.name}".center(172)
         puts ""
       end
-      gap
+      2.times {puts ""}
       puts "Would you like to play a game with these categories? [Y/N]".center(172)
       20.times {puts ""}
       setup_input = gets.chomp.upcase
-      sleep(0.3)
       if ["Y", "YES", "YEP", "YEAH", "YUP", "UH-HUH", "SURE", "YA", "YEA", "OK", "O.K."].include? setup_input
         clear_screen
         break      
       elsif ["N", "NOPE", "NO", "NAH", "NO WAY", "NO WAY, JOSE", "NO THANKS"].include? setup_input
-        clear_screen
+        30.times {puts ""}
         puts "Okay, let's get a new set of categories.".center(172)
-        31.times {puts ""}
-        sleep(1)
+        29.times {puts ""}
+        sleep(1.5)
         Fetcher.fetch_clues
       else
         clear_screen
         puts "Sorry, you'll need to enter:".center(172)
         puts ""
-        puts "Y for 'yes'".center(172)
+        puts "Y for \"yes\"".center(172)
         puts ""
         puts "or".center(172)
         puts ""
-        puts "N for 'no'".center(172)
-        27.times {puts ""}
+        puts "N for \"no\"".center(172)
+        26.times {puts ""}
         sleep(2)
       end
     end
@@ -84,10 +85,6 @@ class CLI
     category.clues.all? {|clue| clue.answered == true}
   end
   
-
-
-
-
   def self.disp_cat(category, x)
     if category_empty?(category)
       ""
@@ -130,11 +127,11 @@ class CLI
       Clue.all.detect {|clue| clue.getter_input == clue_choice } ? @chosen_clue = Clue.all.detect {|clue| clue.getter_input == clue_choice } : nil
       if @chosen_clue == ""
         Art.board
-        puts "Sorry, that was an invalid selection. Please enter a letter-number combination corresponding to an available clue.".center(172)
+        puts "(Sorry, that was an invalid selection. Please enter a letter-number combination corresponding to an available clue.)".center(172)
         self.show_score
       elsif @chosen_clue.answered == true
         Art.board
-        puts "Sorry, that clue has already been selected. Please enter a letter-number combination corresponding to an available clue.".center(172)
+        puts "(Sorry, that clue has already been selected. Please enter a letter-number combination corresponding to an available clue.)".center(172)
         self.show_score
       elsif @chosen_clue.answered == false
         @chosen_clue.answered = true
@@ -156,11 +153,6 @@ class CLI
     4.times {puts ""}
   end
 
-
-
-  # @@point_total = 1000
-  # Clue.all.map {|c| c.scoring_daily_double = true}           useful in pry session to set all clues to DD
-
   def daily_double_prompt
     20.times {puts ""}
     puts "You have selected the daily double!".center(172)
@@ -171,7 +163,7 @@ class CLI
     2.times {puts ""}
     puts "If you answer incorrectly, the risked points will be deducted from your score.".center(172)
     2.times {puts ""}
-    puts "You may choose to risk 0 points.".center(172)
+    puts "You may also choose to risk 0 points.".center(172)
     2.times {puts ""}
     puts "The clue's category is \"#{@chosen_clue.category.name}\", and its original point value was #{@chosen_clue.points}.".center(172)
     2.times {puts ""}
@@ -188,7 +180,7 @@ class CLI
         @wager = Integer(@wager)
       rescue ArgumentError
         23.times {puts ""}
-        puts "Sorry, you'll need to enter a number of points to risk on the Daily Double.".center(172)
+        puts "(Sorry, you'll need to enter a number of points to risk on the Daily Double.)".center(172)
         self.daily_double_error_template
         retry
       end
@@ -197,12 +189,11 @@ class CLI
         break
       elsif @wager > @max_wager
         23.times {puts ""}
-        puts "Sorry, you don't have enough points to risk that many. Please enter a different amount to risk on the Daily Double.".center(172)
+        puts "(Sorry, you don't have enough points to risk that many. Please enter a different amount to risk on the Daily Double.)".center(172)
         self.daily_double_error_template
       end
     end
   end
-
 
   def daily_double_error_template
     2.times {puts ""}
@@ -212,10 +203,9 @@ class CLI
     2.times {puts ""}
     puts "You are able to risk up to #{@max_wager} points.".center(172)
     2.times {puts ""}
-    puts "You may choose to risk 0 points.".center(172)
+    puts "You may also choose to risk 0 points.".center(172)
     24.times {puts ""}
   end
-
 
   def display_clue
     Art.board
@@ -251,7 +241,7 @@ class CLI
   def ask_if_correct
     puts "This game is based on the honor system; would Trebek have accepted your answer? [Y/N]".center(172)
     loop do
-      trust_fall = gets.chomp.capitalize
+      trust_fall = gets.chomp.upcase
       if ["N", "NOPE", "NO", "NAH", "NO WAY", "NO WAY, JOSE", "NO THANKS"].include? trust_fall
         Art.board
         2.times {puts ""}
@@ -276,7 +266,7 @@ class CLI
         display_clue
         puts "You answered \"#{@player_answer}\".  The correct answer is \"#{@chosen_clue.answer}\".".center(172)
         puts ""
-        puts "Sorry, you'll need to answer whether you got the question right or not. [Y/N] No judgement!".center(172)
+        puts "(Sorry, you'll need to answer whether you got the question right or not. [Y/N] No judgement!)".center(172)
       end
     end
   end
@@ -290,15 +280,38 @@ class CLI
   end
 
   def game_over
-    puts ""
-    puts ""
-
-  def gap
-    puts ""
-    puts ""
-    puts ""
+    self.game_over_msg_base
+    puts "Would you like to start a new game? [Y/N]".center(172)
+    27.times {puts ""}
+    loop do
+      new_game_input = gets.chomp.upcase
+      if ["N", "NOPE", "NO", "NAH", "NO WAY", "NO WAY, JOSE", "NO THANKS"].include? new_game_input
+        29.times {puts ""}
+        puts "Thanks for playing! Until next time!".center(172)
+        30.times {puts ""}
+        sleep(2)
+        break
+      elsif ["Y", "YES", "YEP", "YEAH", "YUP", "UH-HUH", "SURE", "YA", "YEA", "OK", "O.K.", "DUH"].include? new_game_input
+        self.run
+        break
+      else
+        self.game_over_msg_base
+        puts "(Sorry, you'll need to enter Y for \"yes\" or N for \"no\")".center(172)
+        27.times {puts ""}
+      end
+    end
   end
   
+  def game_over_msg_base
+    26.times {puts ""}
+    puts "There are no more clues to answer!".center(172)
+    puts ""
+    puts "Your final score is #{@@point_total}.".center(172)
+    puts ""
+    puts "Thanks for playing!".center(172)
+    puts ""
+  end
+
   def clear_screen
     60.times do
       puts ""

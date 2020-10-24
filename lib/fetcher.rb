@@ -10,6 +10,7 @@ class Fetcher
     clues_array = []
     i = 1
     until clues_array.count == 30 && clues_array.all? {|c| c["answer"] != "" && c["question"] != "" && c["invalid_count"] == nil}
+      30.times {puts ""}
       puts "Loading categories and validating clues.".center(172)
       puts ""
       if i % 3 == 1
@@ -19,7 +20,7 @@ class Fetcher
       elsif i % 3 == 0
         puts "...".rjust(87)
       end
-      29.times {puts ""}
+      27.times {puts ""}
       i += 1
       self.randomize_date
       parsed_url = URI.parse(BASE_URL + "api/clues?min_date=#{@date}&max_date=#{@date}")
