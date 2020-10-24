@@ -182,11 +182,18 @@ class CLI
         @wager = gets.chomp
         @wager = Integer(@wager)
       rescue ArgumentError
+        23.times {puts ""}
         puts "Sorry, you'll need to enter a number of points to risk.".center(172)
         2.times {puts ""}
-        puts "You are currently able to risk up to #{@max_wager} points.".center(172)
+        puts "You currently have #{@@point_total} points.".center(172)
+        2.times {puts ""}
+        puts "The clue's category is \"#{@chosen_clue.category.name}\", and its original point value was #{@chosen_clue.points}.".center(172)
+        2.times {puts ""}
+        puts "You are able to risk up to #{@max_wager} points.".center(172)
         2.times {puts ""}
         puts "You may choose to risk 0 points.".center(172)
+        24.times {puts ""}
+        retry
       end
       if @wager <= @max_wager
         @chosen_clue.answered = true
@@ -205,10 +212,17 @@ class CLI
 
   def display_clue
     Art.board
+    if @chosen_clue.scoring_daily_double == true
+      puts "\"#{@chosen_clue.category.name}\" for #{@wager}:".center(172)
+      puts ""
+      puts "#{@chosen_clue.question}".center(172)
+      puts ""
+    else
       puts "\"#{@chosen_clue.category.name}\" for #{@chosen_clue.points}:".center(172)
       puts ""
       puts "#{@chosen_clue.question}".center(172)
       puts ""
+    end
   end
 
 
@@ -235,8 +249,8 @@ class CLI
         Art.board
         2.times {puts ""}
         if @chosen_clue.scoring_daily_double == true
-          puts "Unfortunately, because you incorrectly answered the Daily Double clue, #{@chosen_clue.points} points have been deducted from your score.".center(172) 
-          @@point_total -= @chosen_clue.points
+          puts "Unfortunately, because you incorrectly answered the Daily Double clue, #{@wager} points have been deducted from your score.".center(172) 
+          @@point_total -= @wager
         else
           puts "Thanks for being honest!".center(172)
         end
@@ -244,27 +258,24 @@ class CLI
         sleep(2)
         break
       elsif ["Y", "YES", "YEP", "YEAH", "YUP", "UH-HUH", "SURE", "YA", "YEA", "OK", "O.K.", "DUH"].include? trust_fall
-        if @chosen_clue.scoring_daily_double == true
-          @@point_total += @wager
-
-          self.add_points
-          Art.board
-          2.times {puts ""}
-          puts "Good job!".center(172)
-          4.times {puts ""}
-          sleep(2)
-          break
-        else
-          display_clue
-          puts "You answered \"#{@player_answer}\".  The correct answer is \"#{@chosen_clue.answer}\".".center(172)
-          puts ""
-          puts "Sorry, you'll need to answer whether you got the question right or not. [Y/N] No judgement!".center(172)
+        self.add_points
+        Art.board
+        2.times {puts ""}
+        puts "Good job!".center(172)
+        4.times {puts ""}
+        sleep(2)
+        break
+      else
+        display_clue
+        puts "You answered \"#{@player_answer}\".  The correct answer is \"#{@chosen_clue.answer}\".".center(172)
+        puts ""
+        puts "Sorry, you'll need to answer whether you got the question right or not. [Y/N] No judgement!".center(172)
       end
     end
   end
 
   def add_points
-    @@point_total += @chosen_clue.points
+    @chosen_clue.scoring_daily_double == true ? @@point_total += @wager : @@point_total += @chosen_clue.points
     Art.board
     2.times {puts ""}
     puts "Your current point total is #{@@point_total}."
