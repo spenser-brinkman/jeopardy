@@ -1,12 +1,16 @@
 class CLI
+  
+  @@point_total = 0
 
-  def run_2
+  def run
     # self.intro
     Fetcher.fetch_clues
     self.prompt_for_setup
-    # self.sort_points
+    Clue.assign_getters
+    until self.board_empty?
+      self.play 
+    end
     Art.board
-    self.prompt_for_clue_selection
 
   end
 
@@ -36,14 +40,14 @@ class CLI
         puts ""
       end
       gap
-      puts "Would you like to play a game with these categories? (Y/N)".center(172)
+      puts "Would you like to play a game with these categories? [Y/N]".center(172)
       20.times {puts ""}
-      setup_input = gets.chomp.capitalize
+      setup_input = gets.chomp.upcase
       sleep(0.3)
-      if setup_input == "Y"
+      if ["Y", "YES", "YEP", "YEAH", "YUP", "UH-HUH", "SURE", "YA", "YEA", "OK", "O.K."].include? setup_input
         clear_screen
         break      
-      elsif setup_input == "N"
+      elsif ["N", "NOPE", "NO", "NAH", "NO WAY", "NO WAY, JOSE", "NO THANKS"].include? setup_input
         clear_screen
         puts "Okay, let's get a new set of categories.".center(172)
         31.times {puts ""}
@@ -64,15 +68,35 @@ class CLI
     end
   end
 
+  def play
+    Art.board
+    binding.pry
+    self.select_clue
+    self.prompt_for_answer
+    self.ask_if_correct
+  end
+
+  def board_empty?
+    Clue.all.all? {|clue| clue.answered == true}
+  end
+
+  def self.category_empty?(category)
+    category.clues.all? {|clue| clue.answered == true}
+  end
+  
+
+
+
+
   def self.disp_cat(category, x)
-    if category.category_empty?
-      puts ""
+    if category_empty?(category)
+      ""
     else
-      multiline_cat_name = ["", "", ""]             #this splits long category names into smaller pieces to be displayed in the board's boxes
-      i = 0
-      multiline_cat_name.map do |line|
-        line = category.name.scan(/.{1,20}\b/)[i]
-        line != nil ? multiline_cat_name[i] = line : nil
+      multiline_cat_name = ["", ""]                                                     # this method splits long
+      i = 0                                                                             # 
+      multiline_cat_name.map do |line|                                                  # category names into smaller pieces
+        line = category.name.scan(/.{1,20}\b/)[i]                                       #
+        line != nil ? multiline_cat_name[i] = line : nil                                # to be displayed in the board's boxes
         i += 1
       end
       split_string_array = multiline_cat_name.map { |line| line.delete_suffix(" ") }
@@ -80,93 +104,172 @@ class CLI
     end
   end
 
-  def self.get_points(cat_i, points_to_show, getter_input)
-    Category.all[cat_i].clues.each do |c|
-      if c.helper_daily_double == nil
-        if c.points == points_to_show
-          c.getter_input = getter_input
-          break
+  def self.disp_points(getter_input)
+    Clue.all.detect do |c|
+      if c.getter_input == getter_input
+        if c.answered == false
+          @response = c.points
+        elsif c.answered == true
+          if c.points.between?(200, 800)
+            @response = "   "
+          elsif c.points == 1000
+            @response = "    "
+          end
         end
-      elsif c.helper_daily_double == true
-        c.points = points_to_show
-        c.helper_daily_double = false
-        c.getter_input = getter_input
-      # elsif c.answered == true && c.points.between?(200, 800)
-      #   points_to_show = "   "
-      # elsif c.answered == true && c.points == 1000
-      #   points_to_show = "    "
       end
     end
-    points_to_show
+    @response
   end
 
-
-
-
-  #stopped here, figuring out how to get clue selection to properly grab a clue
-
-  def prompt_for_clue_selection
+  def select_clue
     puts "Please enter a letter-number combination corresponding to an available clue.".center(172)
+    self.show_score
     loop do
       clue_choice = gets.chomp.capitalize
-      chosen_clue = ""
-      chosen_clue = Clue.all.detect {|clue| clue.getter_input == clue_choice }
-      binding.pry
-      if chosen_clue.answered == true
-        puts "Sorry, that clue has already been selected. Please enter a letter-number combination corresponding to an available clue.".center(172)
-      elsif chosen_clue = ""
+      @chosen_clue = ""
+      Clue.all.detect {|clue| clue.getter_input == clue_choice } ? @chosen_clue = Clue.all.detect {|clue| clue.getter_input == clue_choice } : nil
+      if @chosen_clue == ""
+        Art.board
         puts "Sorry, that was an invalid selection. Please enter a letter-number combination corresponding to an available clue.".center(172)
-      elsif chosen_clue.answered == false
-        self.display_clue(chosen_clue)
+        self.show_score
+      elsif @chosen_clue.answered == true
+        Art.board
+        puts "Sorry, that clue has already been selected. Please enter a letter-number combination corresponding to an available clue.".center(172)
+        self.show_score
+      elsif @chosen_clue.answered == false
+        @chosen_clue.answered = true
+        if @chosen_clue.scoring_daily_double == true
+          self.daily_double_prompt
+        end
+        self.display_clue
         break
       end 
     end
   end
     
-  def display_clue(chosen_clue)
-    puts "#{chosen_clue.question}"  
-    puts "#{chosen_clue.points}"
-  end
-
-
-
-  def answer_clue(clue)
-    clue.points = ""
-  end
-
-  def sort_points
-    @sorted_array = []
-    Category.all.each do |cat|
-      sorted_clues = cat.clues
-      sorted_clues.sort_by! {|c| c.points}
-      @sorted_array << sorted_clues
+  def show_score
+    if @@point_total != 0
+      puts "" 
+      puts "You currently have #{@@point_total} points.".center(172)
+    else 2.times {puts ""}
     end
-    binding.pry
+    4.times {puts ""}
+  end
+
+  def daily_double_prompt
+    20.times {puts ""}
+    puts "You have selected the daily double!".center(172)
+    2.times {puts ""}
+    puts "You may risk up to as many points as you have for a chance to double them.".center(172)
+    2.times {puts ""}
+    puts "If you have fewer than 2000 points, you may risk up to 2000 points.".center(172)
+    2.times {puts ""}
+    puts "If you answer incorrectly, the risked points will be deducted from your score.".center(172)
+    2.times {puts ""}
+    puts "You may choose to risk 0 points.".center(172)
+    2.times {puts ""}
+    puts "The clue's category is \"#{@chosen_clue.category.name}\", and its original point value was #{@chosen_clue.points}.".center(172)
+    2.times {puts ""}
+    if @@point_total < 2000
+      puts "You currently have #{@@point_total} points, so you may risk up to 2000. How many would you like to risk?".center(172)
+    elsif @@point_total >= 2000
+      puts "You currently have #{@@point_total} points. How many would you like to risk?".center(172)
+    end
+    20.times {puts ""}
+    @@point_total <= 2000 ? @max_wager = 2000 : @max_wager = @@point_total
+    loop do
+      begin
+        @wager = gets.chomp
+        @wager = Integer(@wager)
+      rescue ArgumentError
+        puts "Sorry, you'll need to enter a number of points to risk.".center(172)
+        2.times {puts ""}
+        puts "You are currently able to risk up to #{@max_wager} points.".center(172)
+        2.times {puts ""}
+        puts "You may choose to risk 0 points.".center(172)
+      end
+      if @wager <= @max_wager
+        @chosen_clue.answered = true
+        break
+      elsif @wager > @max_wager
+        puts "Sorry, you don't have enough points to risk that many. Please enter a different amount to risk."
+      end
+    end
   end
 
 
+  def daily_double_message
+
+  end
 
 
+  def display_clue
+    Art.board
+      puts "\"#{@chosen_clue.category.name}\" for #{@chosen_clue.points}:".center(172)
+      puts ""
+      puts "#{@chosen_clue.question}".center(172)
+      puts ""
+  end
 
 
+  def fit_clue
+    
+  end
 
 
+  def prompt_for_answer
+    puts ""
+    puts "Please enter your answer.".center(172)
+    puts ""
+    @player_answer = gets.chomp
+    display_clue
+    puts "You answered \"#{@player_answer}\".  The correct answer is \"#{@chosen_clue.answer}\".".center(172)
+    puts ""
+  end
 
+  def ask_if_correct
+    puts "This game is based on the honor system; would Trebek have accepted your answer? [Y/N]".center(172)
+    loop do
+      trust_fall = gets.chomp.capitalize
+      if ["N", "NOPE", "NO", "NAH", "NO WAY", "NO WAY, JOSE", "NO THANKS"].include? trust_fall
+        Art.board
+        2.times {puts ""}
+        if @chosen_clue.scoring_daily_double == true
+          puts "Unfortunately, because you incorrectly answered the Daily Double clue, #{@chosen_clue.points} points have been deducted from your score.".center(172) 
+          @@point_total -= @chosen_clue.points
+        else
+          puts "Thanks for being honest!".center(172)
+        end
+        4.times {puts ""}
+        sleep(2)
+        break
+      elsif ["Y", "YES", "YEP", "YEAH", "YUP", "UH-HUH", "SURE", "YA", "YEA", "OK", "O.K.", "DUH"].include? trust_fall
+        if @chosen_clue.scoring_daily_double == true
+          @@point_total += @wager
 
+          self.add_points
+          Art.board
+          2.times {puts ""}
+          puts "Good job!".center(172)
+          4.times {puts ""}
+          sleep(2)
+          break
+        else
+          display_clue
+          puts "You answered \"#{@player_answer}\".  The correct answer is \"#{@chosen_clue.answer}\".".center(172)
+          puts ""
+          puts "Sorry, you'll need to answer whether you got the question right or not. [Y/N] No judgement!".center(172)
+      end
+    end
+  end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  def add_points
+    @@point_total += @chosen_clue.points
+    Art.board
+    2.times {puts ""}
+    puts "Your current point total is #{@@point_total}."
+    4.times {puts ""}
+  end
 
   def gap
     puts ""
@@ -179,139 +282,4 @@ class CLI
       puts ""
     end
   end
-
-  def run
-    # self.intro
-    # self.gather_and_validate    #turn this on
-    self.gather_categories        #turn these off
-    self.gather_clues             #turn these off
-    self.prompt_for_setup
-    self.prompt_for_category
-    self.prompt_for_value
-    self.get_clue
-    self.prompt_for_answer
-    self.display_answer
-  end
-
-  
-
-  # https://www.rubyguides.com/2012/01/ruby-string-formatting/ to clean this vvvv up
-
-  def generate_board
-    @row_one = [Category.all[0].clues[0], Category.all[0].clues[1], Category.all[0].clues[2], Category.all[0].clues[3], Category.all[0].clues[4]]
-    @row_two = [Category.all[1].clues[0], Category.all[1].clues[1], Category.all[1].clues[2], Category.all[1].clues[3], Category.all[1].clues[4]]
-    @row_three = [Category.all[2].clues[0], Category.all[2].clues[1], Category.all[2].clues[2], Category.all[2].clues[3], Category.all[2].clues[4]]
-    @row_four = [Category.all[3].clues[0], Category.all[3].clues[1], Category.all[3].clues[2], Category.all[3].clues[3], Category.all[3].clues[4]]
-    @row_five = [Category.all[4].clues[0], Category.all[4].clues[1], Category.all[4].clues[2], Category.all[4].clues[3], Category.all[4].clues[4]]
-    @row_six = [Category.all[5].clues[0], Category.all[5].clues[1], Category.all[5].clues[2], Category.all[5].clues[3], Category.all[5].clues[4]]
-    @all_rows = [@row_one, @row_two, @row_three, @row_four, @row_five, @row_six]
-  end
-
-  def display_starting_board
-    self.gap
-    puts "#{Category.all[0].name}   [1]".rjust(79) + "    ----    " + "#{@row_one[0].point_value} | #{@row_one[1].point_value} | #{@row_one[2].point_value} | #{@row_one[3].point_value} | #{@row_one[4].point_value}"
-    self.gap
-    puts "#{Category.all[1].name}   [2]".rjust(79) + "    ----    " + "#{@row_two[0].point_value} | #{@row_two[1].point_value} | #{@row_two[2].point_value} | #{@row_two[3].point_value} | #{@row_two[4].point_value}"
-    self.gap
-    puts "#{Category.all[2].name}   [3]".rjust(79) + "    ----    " + "#{@row_three[0].point_value} | #{@row_three[1].point_value} | #{@row_three[2].point_value} | #{@row_three[3].point_value} | #{@row_three[4].point_value}"
-    self.gap
-    puts "#{Category.all[3].name}   [4]".rjust(79) + "    ----    " + "#{@row_four[0].point_value} | #{@row_four[1].point_value} | #{@row_four[2].point_value} | #{@row_four[3].point_value} | #{@row_four[4].point_value}"
-    self.gap
-    puts "#{Category.all[4].name}   [5]".rjust(79) + "    ----    " + "#{@row_five[0].point_value} | #{@row_five[1].point_value} | #{@row_five[2].point_value} | #{@row_five[3].point_value} | #{@row_five[4].point_value}"
-    self.gap
-    puts "#{Category.all[5].name}   [6]".rjust(79) + "    ----    " + "#{@row_six[0].point_value} | #{@row_six[1].point_value} | #{@row_six[2].point_value} | #{@row_six[3].point_value} | #{@row_six[4].point_value}"
-    self.gap
-  end
-  
-  def prompt_for_category
-    generate_board
-    puts "Today's categories are:".center(172)
-    loop do
-      display_starting_board
-      puts "Please enter 1-6 to select a category.".center(172)
-      15.times {puts ""}
-      @category_input = gets.chomp.to_i
-      clear_screen
-      if @category_input.between?(1, 6) # and category still has clues to answer
-        @category_input -= 1
-        puts "#{Category.all[@category_input].name} (#{Category.all[@category_input].year})".center(172)
-        gap
-        puts "#{@all_rows[@category_input][0].point_value}   [1]".center(172)
-        puts ""
-        puts "#{@all_rows[@category_input][1].point_value}   [2]".center(172)
-        puts ""
-        puts "#{@all_rows[@category_input][2].point_value}   [3]".center(172)
-        puts ""
-        puts "#{@all_rows[@category_input][3].point_value}   [4]".center(172)
-        puts ""
-        puts "#{@all_rows[@category_input][4].point_value}   [5]".center(172)
-        gap
-        break
-      else
-        clear_screen
-        puts "Sorry, you need to enter a number corresponding to one of the categories listed here:".center(172)
-      end
-    end
-  end
-
-  def prompt_for_value
-    loop do
-      puts "Please enter a number corresponding to the point value of an available clue.".center(172)
-      22.times {puts ""}
-      @value_input = gets.chomp.to_i
-      @value_input -= 1
-      if @value_input.between?(0, 4) # && user_input still exists as an index?
-        break
-      else
-        puts "Sorry, you need to enter a number corresponding to one of the clues listed here:".center(172)
-      end
-    end
-  end
-
-  def get_clue
-    clear_screen
-    puts "(#{@all_rows[@category_input][@value_input].year})".center(172)
-    puts ""
-    puts "For #{@all_rows[@category_input][@value_input].point_value} points,".center(172)
-    puts ""
-    puts "from the category".center(172)
-    puts ""
-    puts "\"#{Category.all[@category_input].name}\":".center(172)
-    gap
-    puts "#{@all_rows[@category_input][@value_input].question}".center(172)
-    26.times {puts ""}
-  end
-
-  def prompt_for_answer
-    @answer_input = gets
-  end
-
-  def display_answer
-    clear_screen
-    puts "(#{@all_rows[@category_input][@value_input].year})".center(172)
-    puts ""
-    puts "For #{@all_rows[@category_input][@value_input].point_value} points,".center(172)
-    puts ""
-    puts "from the category".center(172)
-    puts ""
-    puts "\"#{Category.all[@category_input].name}\":".center(172)
-    gap
-    puts "#{@all_rows[@category_input][@value_input].question}".center(172)
-    gap
-    sleep(1)
-    puts "You answered:".center(172)
-    puts ""
-    puts "#{@answer_input}".center(172)
-    sleep(1)
-    puts ""
-    puts "The correct answer is:".center(172)
-    puts ""
-    puts "#{@all_rows[@category_input][@value_input].answer}".center(172)
-    16.times {puts ""}
-  end
-
 end
-
-
-
-# change all `sleep(0)` to `sleep(1)`

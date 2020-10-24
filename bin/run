@@ -2,4 +2,4 @@
 
 require_relative '../config/environment.rb'
 
-CLI.new.run_2
+CLI.new.run
