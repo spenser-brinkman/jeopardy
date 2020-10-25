@@ -15,24 +15,20 @@ mvp:
 stretch goals:
     
     
-    expand on instructions and short-comings in the game's startup
+    Expand on instructions and short-comings in the game's startup
 
 
-    do not ask questions that reference music, pictures, or videos
+    Do not ask questions that reference music, pictures, or videos (this has been implemented to the best of my ability. The API data
+    has a value to check if clues depend on extra media, but not all clues have this value defined properly.)
 
 
-    validate user answers to (closely) match actual answers
-
-
-    allow user to decline set of categories based on year given
-    OR
-    allow user to select a year to play from
+    Validate user's answers to (closely) match actual answers
 
 
     have game run for two rounds, doubling point values for second round
 
 
-    add a timer to questions that counts down, waiting for an entry of any character to "buzz in" before timer expires. if timer expires, the question is lost and play continues
+    Implement a timer to questions that counts down, waiting for an entry of any character to "buzz in" before timer expires. if timer expires, the question is lost and play continues
 
 
-    add a game timer that will end play on expiration and go to commercial break
+    Implement a game timer that will end play on expiration and go to commercial break

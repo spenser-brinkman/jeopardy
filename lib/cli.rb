@@ -1,8 +1,6 @@
 class CLI
-  # @@point_total = 0
 
   def run
-    String.color_samples
     @@point_total = 0
     self.intro
     Fetcher.fetch_clues
@@ -154,6 +152,8 @@ class CLI
   end
 
   def daily_double_prompt
+    Art.daily_double_art
+    sleep(2)
     20.times {puts ""}
     puts "You have selected the daily double!".center(172)
     2.times {puts ""}
@@ -260,7 +260,7 @@ class CLI
         2.times {puts ""}
         puts "Good job!".center(172)
         4.times {puts ""}
-        sleep(2)
+        sleep(1.5)
         break
       else
         display_clue
