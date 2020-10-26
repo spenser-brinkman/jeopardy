@@ -224,7 +224,7 @@ class CLI
 
 
   def fit_clue
-    
+    # potential method to cut LONG clues into shorter sections to better fit in the terminal display
   end
 
 
