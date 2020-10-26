@@ -1,18 +1,22 @@
 # solo-jeopardy
 
+## Setup and startup
 
-enter `bundle install` before your first game to install the necessary ruby gems.
+Enter `bundle install` before your first game to install the necessary ruby gems.
 
-once the gems are installed and you're ready to play. enter `###` to start a new game of solo jeopardy
-
-mvp:
-
+Once the gems are installed and you're ready to play. Enter `ruby bin/run` to start a new game of Solo Jeopardy.
 
 
+## Flatiron Assessment blog and video
+
+[Video demonstration](https://vimeo.com/user125816596/review/472039062/641d710a21)
+
+[dev.to Blog](https://dev.to/spenser6131/adding-flavor-to-a-ruby-cli-application-4jae)
 
 
 
-stretch goals:
+
+Stretch goals:
     
     
     Expand on instructions and short-comings in the game's startup
