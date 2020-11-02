@@ -29,10 +29,13 @@ Once the gems are installed and you're ready to play. Enter `ruby bin/run` to st
   Validate user's answers to (closely) match actual answers
 
 
-  have game run for two rounds, doubling point values for second round
+  Have game run for two rounds, doubling point values for second round
 
 
   Implement a timer to questions that counts down, waiting for an entry of any character to "buzz in" before timer expires. if timer expires, the question is lost and play continues
 
 
   Implement a game timer that will end play on expiration and go to commercial break
+
+
+  Add sound/music (Jeopardy Think Music.mp3 available in asset file)
