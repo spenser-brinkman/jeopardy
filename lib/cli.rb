@@ -11,7 +11,6 @@ class CLI
     end
     Art.board
     self.game_over
-
   end
 
   def intro
@@ -45,7 +44,7 @@ class CLI
       20.times {puts ""}
       setup_input = gets.chomp.upcase
       if ["Y", "YES", "YEP", "YEAH", "YUP", "UH-HUH", "SURE", "YA", "YEA", "OK", "O.K."].include? setup_input
-        clear_screen
+        60.times {puts ""}
         break      
       elsif ["N", "NOPE", "NO", "NAH", "NO WAY", "NO WAY, JOSE", "NO THANKS"].include? setup_input
         30.times {puts ""}
@@ -54,7 +53,7 @@ class CLI
         sleep(1.5)
         Fetcher.fetch_clues
       else
-        clear_screen
+        60.times {puts ""}
         puts "Sorry, you'll need to enter:".center(172)
         puts ""
         puts "Y for \"yes\"".center(172)
@@ -310,11 +309,5 @@ class CLI
     puts ""
     puts "Thanks for playing!".center(172)
     puts ""
-  end
-
-  def clear_screen
-    60.times do
-      puts ""
-    end
   end
 end
