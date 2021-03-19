@@ -15,6 +15,7 @@ class Clue
   end
 
   def self.all
+    self
     @@all
   end
   
@@ -27,31 +28,9 @@ class Clue
   end
 
   def self.generate_getter
-    if @i == 0
-      letter = "A"
-    elsif @i == 1
-      letter = "B"
-    elsif @i == 2
-      letter = "C"
-    elsif @i == 3
-      letter = "D"
-    elsif @i == 4
-      letter = "E"
-    elsif @i == 5
-      letter = "F"
-    end
-    if @p == 200
-      number = "1"
-    elsif @p == 400
-      number = "2"
-    elsif @p == 600
-      number = "3"
-    elsif @p == 800
-      number = "4"
-    elsif @p == 1000
-      number = "5"
-    end
-    getter_input = "#{letter}#{number}"
+    letters = {0 => "A", 1 => "B", 2 => "C", 3 => "D", 4 => "E", 5 => "F"}
+    numbers = {200 => "1", 400 => "2", 600 => "3", 800 => "4", 1000 => "5"}
+    getter_input = "#{letters[@i]}#{numbers[@p]}"
     getter_input
   end
 
