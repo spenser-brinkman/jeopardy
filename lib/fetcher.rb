@@ -11,15 +11,8 @@ class Fetcher
     i = 1
     until clues_array.count == 30 && clues_array.all? {|c| c["answer"] != "" && c["question"] != "" && c["invalid_count"] == nil}
       30.times {puts ""}
-      puts "Loading categories and validating clues.".center(172)
-      puts ""
-      if i % 3 == 1
-        puts ".".rjust(85)
-      elsif i % 3 == 2
-        puts "..".rjust(86)
-      elsif i % 3 == 0
-        puts "...".rjust(87)
-      end
+      puts "Loading categories and validating clues.".center(172), ""
+      puts i % 3 == 1 ? ".".rjust(85) : (i % 3 == 2 ? "..".rjust(86) : "...".rjust(87))
       27.times {puts ""}
       i += 1
       self.randomize_date
