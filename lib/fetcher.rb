@@ -47,26 +47,19 @@ class Fetcher
       end
     end
   end
-
-  # vv   The first episode of Jeopardy to use the current dollar amounts aired on Nov 26, 2001.   vv
-  # vv          The most recent episode available from this API aired on Mar 31, 2015             vv
   
   def self.randomize_date  
     year = rand(2001..2015)
-    if year == 2001
+    if year == 2001             # The first episode to use the current $ amounts aired Nov 26, 2001
       month = rand(11..12)
-      if month == 11
-        day = rand(26..30)
-      elsif month == 12
-        day = rand(1..31)
-      end
-    elsif year == 2015
+      month == 11 ? day = rand(26..30) : day = rand(1..31)
+    elsif year == 2015          # The latest episode available aired on Mar 31, 2015
       month = rand(1..3)
       day = rand(1..31)
     else
       month = rand(1..12)
       day = rand(1..31)
     end
-    @date = "#{year.to_s}-#{month.to_s}-#{day.to_s}"
+    @date = "#{year}-#{month}-#{day}"
   end
 end
