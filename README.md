@@ -1,5 +1,5 @@
 # solo-jeopardy
-test
+
 ## Setup and startup
 
 Enter `bundle install` before your first game to install the necessary ruby gems.
