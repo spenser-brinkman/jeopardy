@@ -9,7 +9,7 @@ Once the gems are installed and you're ready to play. Enter `ruby bin/run` to st
 
 ## Flatiron Assessment blog and video
 
-[Video demonstration](https://vimeo.com/user125816596/review/472039062/641d710a21)
+[Video demonstration](https://vimeo.com/472039062)
 
 [dev.to Blog](https://dev.to/spenser6131/adding-flavor-to-a-ruby-cli-application-4jae)
 
