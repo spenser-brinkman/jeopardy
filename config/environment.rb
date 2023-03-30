@@ -6,7 +6,7 @@ require_relative '../lib/fetcher.rb'
 require_relative '../lib/cli.rb'
 require_relative '../lib/art.rb'
 
-require "pry"
+#require "pry"
 require "open-uri"
 require "net/http"
 require "json"
