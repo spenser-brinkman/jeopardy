@@ -1,4 +1,4 @@
-# solo-jeopardy
+# CLI Jeopardy!
 
 ## Setup and startup
 
